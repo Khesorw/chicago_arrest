@@ -12,10 +12,10 @@
     <parameter key="process_duration_for_mail" value="30"/>
     <parameter key="encoding" value="SYSTEM"/>
     <process expanded="true">
-      <operator activated="true" class="retrieve" compatibility="10.3.001" expanded="true" height="68" name="Retrieve ChicagoCrimeData_2019_2024_FilteredStratified (2)" width="90" x="112" y="85">
-        <parameter key="repository_entry" value="../Data/ChicagoCrimeData_2019_2024_FilteredStratified"/>
+      <operator activated="true" class="retrieve" compatibility="10.3.001" expanded="true" height="68" name="Retrieve chicago_stratified_10000" width="90" x="45" y="136">
+        <parameter key="repository_entry" value="../Data/chicago_stratified_10000"/>
       </operator>
-      <connect from_op="Retrieve ChicagoCrimeData_2019_2024_FilteredStratified (2)" from_port="output" to_port="result 1"/>
+      <connect from_op="Retrieve chicago_stratified_10000" from_port="output" to_port="result 1"/>
       <portSpacing port="source_input 1" spacing="0"/>
       <portSpacing port="sink_result 1" spacing="0"/>
       <portSpacing port="sink_result 2" spacing="0"/>
