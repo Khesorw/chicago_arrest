@@ -21,7 +21,7 @@
             <parameter key="type" value="exclude attributes"/>
             <parameter key="attribute_filter_type" value="a subset"/>
             <parameter key="select_attribute" value=""/>
-            <parameter key="select_subset" value="Block␞Case Number␞IUCR␞Latitude␞Location␞Longitude␞Updated On"/>
+            <parameter key="select_subset" value="Block␞Case Number␞IUCR␞Location␞Updated On"/>
             <parameter key="also_apply_to_special_attributes_(id,_label..)" value="false"/>
             <description align="center" color="yellow" colored="true" width="126">Drop redundant columns&lt;br&gt;</description>
           </operator>
@@ -71,7 +71,7 @@
             <parameter key="type" value="exclude attributes"/>
             <parameter key="attribute_filter_type" value="a subset"/>
             <parameter key="select_attribute" value=""/>
-            <parameter key="select_subset" value="District␞Ward␞Year"/>
+            <parameter key="select_subset" value="District␞Ward␞Year␞Longitude␞Latitude"/>
             <parameter key="also_apply_to_special_attributes_(id,_label..)" value="false"/>
             <description align="center" color="orange" colored="true" width="126">Drop final set of un-needed columns after correlation and association rule analysis</description>
           </operator>
@@ -185,7 +185,7 @@
       <operator activated="true" class="multiply" compatibility="11.0.000" expanded="true" height="166" name="Multiply" width="90" x="313" y="238"/>
       <operator activated="true" class="subprocess" compatibility="11.0.000" expanded="true" height="82" name="CLUSTERING PREPARATION &amp; PROCESS" width="90" x="648" y="544">
         <process expanded="true">
-          <operator activated="true" class="subprocess" compatibility="11.0.000" expanded="true" height="82" name="GeneralDataPreparation" width="90" x="112" y="34">
+          <operator activated="true" class="subprocess" compatibility="11.0.000" expanded="true" height="82" name="ClusteringGeneralDataPreparation" width="90" x="112" y="34">
             <process expanded="true">
               <operator activated="true" class="replace_missing_values" compatibility="11.0.000" expanded="true" height="103" name="Replace Missing Values" width="90" x="45" y="34">
                 <parameter key="return_preprocessing_model" value="false"/>
@@ -268,16 +268,32 @@
                     <parameter key="year_relative_to" value="era"/>
                     <parameter key="keep_old_attribute" value="true"/>
                   </operator>
+                  <operator activated="true" class="date_to_numerical" compatibility="11.0.000" expanded="true" height="82" name="Date to Numerical" width="90" x="447" y="34">
+                    <parameter key="attribute_name" value="Date"/>
+                    <parameter key="time_unit" value="hour"/>
+                    <parameter key="millisecond_relative_to" value="second"/>
+                    <parameter key="second_relative_to" value="minute"/>
+                    <parameter key="minute_relative_to" value="hour"/>
+                    <parameter key="hour_relative_to" value="day"/>
+                    <parameter key="day_relative_to" value="month"/>
+                    <parameter key="week_relative_to" value="year"/>
+                    <parameter key="month_relative_to" value="year"/>
+                    <parameter key="quarter_relative_to" value="year"/>
+                    <parameter key="half_year_relative_to" value="year"/>
+                    <parameter key="year_relative_to" value="era"/>
+                    <parameter key="keep_old_attribute" value="true"/>
+                  </operator>
                   <connect from_port="in 1" to_op="Date to Numerical (4)" to_port="example set input"/>
                   <connect from_op="Date to Numerical (4)" from_port="example set output" to_op="Date to Numerical (5)" to_port="example set input"/>
                   <connect from_op="Date to Numerical (5)" from_port="example set output" to_op="Date to Numerical (6)" to_port="example set input"/>
-                  <connect from_op="Date to Numerical (6)" from_port="example set output" to_port="out 1"/>
+                  <connect from_op="Date to Numerical (6)" from_port="example set output" to_op="Date to Numerical" to_port="example set input"/>
+                  <connect from_op="Date to Numerical" from_port="example set output" to_port="out 1"/>
                   <portSpacing port="source_in 1" spacing="0"/>
                   <portSpacing port="source_in 2" spacing="0"/>
                   <portSpacing port="sink_out 1" spacing="0"/>
                   <portSpacing port="sink_out 2" spacing="0"/>
                 </process>
-                <description align="center" color="blue" colored="true" width="126">All operators are used to parse Date time year etc. features from the Date column</description>
+                <description align="center" color="blue" colored="true" width="126">Extracting features from the Date column</description>
               </operator>
               <operator activated="true" class="blending:rename" compatibility="11.0.000" expanded="true" height="82" name="Rename (3)" width="90" x="447" y="34">
                 <list key="rename attributes">
@@ -285,6 +301,7 @@
                   <parameter key="Date_month" value="Month"/>
                   <parameter key="Date_year" value="Year"/>
                   <parameter key="Location Description" value="Location_Description"/>
+                  <parameter key="Date_hour" value="hour"/>
                 </list>
                 <parameter key="from_attribute" value=""/>
                 <parameter key="to_attribute" value=""/>
@@ -293,6 +310,8 @@
               <operator activated="true" class="blending:generate_columns" compatibility="11.0.000" expanded="true" height="82" name="Generate Attributes (2)" width="90" x="581" y="34">
                 <list key="function_descriptions">
                   <parameter key="LocationType" value="if(&#10;    contains(Location_Description, &quot;STREET&quot;) || &#10;    contains(Location_Description, &quot;SIDEWALK&quot;) || &#10;    contains(Location_Description, &quot;ALLEY&quot;) || &#10;    contains(Location_Description, &quot;PARK PROPERTY&quot;), &#10;    &quot;Outdoor/Public Space&quot;,&#10;    &#10;    if(&#10;        contains(Location_Description, &quot;APARTMENT&quot;) || &#10;        contains(Location_Description, &quot;RESIDENCE&quot;) || &#10;        contains(Location_Description, &quot;HOUSE&quot;) || &#10;        contains(Location_Description, &quot;YARD&quot;) || &#10;        contains(Location_Description, &quot;GARAGE&quot;), &#10;        &quot;Residential&quot;,&#10;&#10;        if(&#10;            contains(Location_Description, &quot;RESTAURANT&quot;) || &#10;            contains(Location_Description, &quot;BAR&quot;) || &#10;            contains(Location_Description, &quot;TAVERN&quot;) || &#10;            contains(Location_Description, &quot;HOTEL&quot;) || &#10;            contains(Location_Description, &quot;MOTEL&quot;),&#10;            &quot;Hospitality/Entertainment&quot;,&#10;&#10;            if(&#10;                contains(Location_Description, &quot;SCHOOL&quot;) || &#10;                contains(Location_Description, &quot;COLLEGE&quot;) || &#10;                contains(Location_Description, &quot;UNIVERSITY&quot;) || &#10;                contains(Location_Description, &quot;LIBRARY&quot;),&#10;                &quot;Educational Institution&quot;,&#10;&#10;                if(&#10;                    contains(Location_Description, &quot;PARKING&quot;) || &#10;                    contains(Location_Description, &quot;DRIVEWAY&quot;) || &#10;                    contains(Location_Description, &quot;GARAGE&quot;), &#10;                    &quot;Parking Area&quot;,&#10;&#10;                    if(&#10;                        contains(Location_Description, &quot;GAS STATION&quot;) || &#10;                        contains(Location_Description, &quot;GROCERY&quot;) || &#10;                        contains(Location_Description, &quot;STORE&quot;) || &#10;                        contains(Location_Description, &quot;RETAIL&quot;) || &#10;                        contains(Location_Description, &quot;DEPARTMENT STORE&quot;) || &#10;                        contains(Location_Description, &quot;CONVENIENCE&quot;),&#10;                        &quot;Retail/Commercial&quot;,&#10;&#10;                        if(&#10;                            contains(Location_Description, &quot;CTA&quot;) || &#10;                            contains(Location_Description, &quot;TRAIN&quot;) || &#10;                            contains(Location_Description, &quot;BUS&quot;) || &#10;                            contains(Location_Description, &quot;AIRPORT&quot;) || &#10;                            contains(Location_Description, &quot;TAXICAB&quot;),&#10;                            &quot;Public Transit&quot;,&#10;&#10;                            if(&#10;                                contains(Location_Description, &quot;HOSPITAL&quot;) || &#10;                                contains(Location_Description, &quot;NURSING&quot;) || &#10;                                contains(Location_Description, &quot;MEDICAL&quot;) || &#10;                                contains(Location_Description, &quot;DENTAL&quot;),&#10;                                &quot;Healthcare&quot;,&#10;&#10;                                if(&#10;                                    contains(Location_Description, &quot;GOVERNMENT&quot;) || &#10;                                    contains(Location_Description, &quot;POLICE&quot;) || &#10;                                    contains(Location_Description, &quot;JAIL&quot;),&#10;                                    &quot;Government&quot;,&#10;&#10;                                    &quot;Other&quot;&#10;                                )&#10;                            )&#10;                        )&#10;                    )&#10;                )&#10;            )&#10;        )&#10;    )&#10;)"/>
+                  <parameter key="Season" value="if((Month== 12) || (Month == 1) ||  (Month== 2), &quot;Winter&quot;,&#10;if( (Month== 3) ||  (Month== 4) ||  (Month == 5),&quot;Spring&quot;,&#10;if( (Month== 6) ||  (Month == 7) ||  (Month== 8),&quot;Summer&quot;,&#10;&quot;Fall&quot;)))"/>
+                  <parameter key="TimeOfDay" value="if(hour &gt;= 5 &amp;&amp; hour &lt; 12, &quot;Morning&quot;,  &#10;   if(hour &gt;= 12 &amp;&amp; hour &lt; 17, &quot;Afternoon&quot;,  &#10;      if(hour &gt;= 17 &amp;&amp; hour &lt; 21, &quot;Evening&quot;, &quot;Night&quot;)))"/>
                 </list>
                 <parameter key="keep_all_columns" value="true"/>
                 <parameter key="default_time_zone" value="America/Toronto"/>
@@ -302,7 +321,7 @@
                 <parameter key="type" value="exclude attributes"/>
                 <parameter key="attribute_filter_type" value="a subset"/>
                 <parameter key="select_attribute" value=""/>
-                <parameter key="select_subset" value="Date␞Description␞Location_Description"/>
+                <parameter key="select_subset" value="Date␞Description␞hour␞Location_Description"/>
                 <parameter key="also_apply_to_special_attributes_(id,_label..)" value="false"/>
                 <description align="center" color="red" colored="true" width="126">Drop un-required columns for any of the further clustering models</description>
               </operator>
@@ -320,17 +339,17 @@
             </process>
             <description align="center" color="red" colored="true" width="126">General Data preparation for clustering modelling&lt;br/&gt;for all techniques&lt;br/&gt;Normalization , One hot encoding etc is performed in the each respective clustering technique subprocess</description>
           </operator>
-          <operator activated="true" class="multiply" compatibility="11.0.000" expanded="true" height="124" name="Multiply (3)" width="90" x="246" y="34">
+          <operator activated="true" class="multiply" compatibility="11.0.000" expanded="true" height="103" name="Multiply (3)" width="90" x="246" y="34">
             <description align="center" color="red" colored="true" width="126">Two techniques of clustering divided into two chains to see Spatial and Crime-type clustering seperately&lt;br/&gt;&lt;br/&gt;Third and final chain uses integrated approach to cluster and find outleirs&lt;br/&gt;</description>
           </operator>
-          <operator activated="true" class="subprocess" compatibility="11.0.000" expanded="true" height="82" name="ClusteringOutliers" width="90" x="514" y="544">
+          <operator activated="false" class="subprocess" compatibility="11.0.000" expanded="true" height="82" name="ClusteringOutliers" width="90" x="514" y="544">
             <process expanded="true">
               <operator activated="true" class="multiply" compatibility="11.0.000" expanded="true" height="103" name="Multiply (4)" width="90" x="45" y="34"/>
               <operator activated="true" class="nominal_to_numerical" compatibility="11.0.000" expanded="true" height="103" name="Nominal to Numerical (2)" width="90" x="246" y="34">
                 <parameter key="return_preprocessing_model" value="false"/>
                 <parameter key="attribute_filter_type" value="subset"/>
                 <parameter key="attribute" value=""/>
-                <parameter key="attributes" value="Community Area|Domestic|FBI Code|LocationType|Primary Type|Arrest|Beat"/>
+                <parameter key="attributes" value="Arrest|Beat|Community Area|Domestic|FBI Code|LocationType|Primary Type|Season|TimeOfDay"/>
                 <parameter key="use_except_expression" value="false"/>
                 <parameter key="value_type" value="nominal"/>
                 <parameter key="use_value_type_exception" value="false"/>
@@ -391,7 +410,7 @@
                 <parameter key="add_cluster_attribute" value="true"/>
                 <parameter key="add_as_label" value="false"/>
                 <parameter key="remove_unlabeled" value="false"/>
-                <parameter key="k" value="5"/>
+                <parameter key="k" value="200"/>
                 <parameter key="max_runs" value="10"/>
                 <parameter key="determine_good_start_values" value="true"/>
                 <parameter key="measure_types" value="BregmanDivergences"/>
@@ -418,7 +437,7 @@
                 <parameter key="normalize" value="false"/>
                 <parameter key="maximize" value="true"/>
               </operator>
-              <operator activated="true" class="concurrency:join" compatibility="11.0.000" expanded="true" height="82" name="join" width="90" x="246" y="340">
+              <operator activated="true" class="concurrency:join" compatibility="11.0.000" expanded="true" height="82" name="join" width="90" x="246" y="391">
                 <parameter key="remove_double_attributes" value="false"/>
                 <parameter key="join_type" value="inner"/>
                 <parameter key="use_id_attribute_as_key" value="true"/>
@@ -427,14 +446,14 @@
                 </list>
                 <parameter key="keep_both_join_attributes" value="false"/>
               </operator>
-              <operator activated="true" class="blending:select_attributes" compatibility="11.0.000" expanded="true" height="82" name="Select Attributes (5)" width="90" x="380" y="340">
+              <operator activated="true" class="blending:select_attributes" compatibility="11.0.000" expanded="true" height="82" name="Select Attributes (5)" width="90" x="380" y="391">
                 <parameter key="type" value="include attributes"/>
                 <parameter key="attribute_filter_type" value="a subset"/>
                 <parameter key="select_attribute" value=""/>
                 <parameter key="select_subset" value="Arrest␞Beat␞cluster␞Community Area␞Day␞Domestic␞FBI Code␞Month␞Primary Type␞X Coordinate␞Y Coordinate␞Year"/>
                 <parameter key="also_apply_to_special_attributes_(id,_label..)" value="false"/>
               </operator>
-              <operator activated="true" class="multiply" compatibility="11.0.000" expanded="true" height="82" name="multiply" width="90" x="514" y="340"/>
+              <operator activated="true" class="multiply" compatibility="11.0.000" expanded="true" height="82" name="multiply" width="90" x="514" y="493"/>
               <operator activated="true" class="aggregate" compatibility="11.0.000" expanded="true" height="82" name="Aggregate" width="90" x="648" y="493">
                 <parameter key="use_default_aggregation" value="false"/>
                 <parameter key="attribute_filter_type" value="single"/>
@@ -463,7 +482,7 @@
                 <parameter key="condition_class" value="custom_filters"/>
                 <parameter key="invert_filter" value="false"/>
                 <list key="filters_list">
-                  <parameter key="filters_entry_key" value="count(Id).lt.5"/>
+                  <parameter key="filters_entry_key" value="count(ID).lt."/>
                 </list>
                 <parameter key="filters_logic_and" value="true"/>
                 <parameter key="filters_check_metadata" value="true"/>
@@ -504,7 +523,7 @@
                 <parameter key="type" value="include attributes"/>
                 <parameter key="attribute_filter_type" value="a subset"/>
                 <parameter key="select_attribute" value=""/>
-                <parameter key="select_subset" value="␞Arrest␞Description␞Domestic␞FBI Code␞Primary Type␞Day␞Month␞Year"/>
+                <parameter key="select_subset" value="␞Arrest␞Day␞Domestic␞FBI Code␞Month␞Primary Type␞Season␞TimeOfDay␞Year"/>
                 <parameter key="also_apply_to_special_attributes_(id,_label..)" value="false"/>
               </operator>
               <connect from_port="in 1" to_op="Select Attributes (9)" to_port="example set input"/>
@@ -522,7 +541,7 @@
                 <parameter key="type" value="include attributes"/>
                 <parameter key="attribute_filter_type" value="a subset"/>
                 <parameter key="select_attribute" value=""/>
-                <parameter key="select_subset" value="␞Beat␞Community Area␞Day␞Month␞X Coordinate␞Y Coordinate␞Year␞CompositeTemp"/>
+                <parameter key="select_subset" value="␞Beat␞Community Area␞Day␞LocationType␞Month␞Season␞TimeOfDay␞X Coordinate␞Y Coordinate␞Year"/>
                 <parameter key="also_apply_to_special_attributes_(id,_label..)" value="false"/>
                 <description align="center" color="red" colored="true" width="126">Spatial-based&lt;br/&gt;clustering</description>
               </operator>
@@ -535,12 +554,11 @@
             </process>
             <description align="center" color="red" colored="true" width="126">Spatial based clustering to cluster as per occurrence of crime geographically</description>
           </operator>
-          <connect from_port="in 1" to_op="GeneralDataPreparation" to_port="in 1"/>
-          <connect from_op="GeneralDataPreparation" from_port="out 1" to_op="Multiply (3)" to_port="input"/>
+          <connect from_port="in 1" to_op="ClusteringGeneralDataPreparation" to_port="in 1"/>
+          <connect from_op="ClusteringGeneralDataPreparation" from_port="out 1" to_op="Multiply (3)" to_port="input"/>
           <connect from_op="Multiply (3)" from_port="output 1" to_op="Spatial-type clustering" to_port="in 1"/>
           <connect from_op="Multiply (3)" from_port="output 2" to_op="Crime-type clustering" to_port="in 1"/>
-          <connect from_op="Multiply (3)" from_port="output 3" to_op="ClusteringOutliers" to_port="in 1"/>
-          <connect from_op="ClusteringOutliers" from_port="out 1" to_port="out 1"/>
+          <connect from_op="Spatial-type clustering" from_port="out 1" to_port="out 1"/>
           <portSpacing port="source_in 1" spacing="0"/>
           <portSpacing port="source_in 2" spacing="0"/>
           <portSpacing port="sink_out 1" spacing="0"/>
@@ -616,17 +634,11 @@
           </operator>
           <connect from_port="in 1" to_op="Select Attributes (6)" to_port="example set input"/>
           <connect from_op="Select Attributes (6)" from_port="example set output" to_op="Subprocess" to_port="in 1"/>
+          <connect from_op="Subprocess" from_port="out 1" to_port="out 1"/>
           <portSpacing port="source_in 1" spacing="0"/>
           <portSpacing port="source_in 2" spacing="0"/>
           <portSpacing port="sink_out 1" spacing="0"/>
           <portSpacing port="sink_out 2" spacing="0"/>
-        </process>
-      </operator>
-      <operator activated="true" class="subprocess" compatibility="11.0.000" expanded="true" height="82" name="DT PREPARATION &amp; PROCESS" width="90" x="648" y="442">
-        <process expanded="true">
-          <portSpacing port="source_in 1" spacing="0"/>
-          <portSpacing port="source_in 2" spacing="0"/>
-          <portSpacing port="sink_out 1" spacing="0"/>
         </process>
       </operator>
       <operator activated="true" class="subprocess" compatibility="11.0.000" expanded="true" height="82" name="KNN PREPARATION &amp; PROCESS (2)" width="90" x="648" y="289">
@@ -945,13 +957,113 @@
           <portSpacing port="sink_out 2" spacing="0"/>
         </process>
       </operator>
+      <operator activated="true" class="subprocess" compatibility="11.0.000" expanded="true" height="82" name="DT PREPARATION &amp; PROCESS (2)" width="90" x="648" y="442">
+        <process expanded="true">
+          <operator activated="true" class="filter_examples" compatibility="11.0.000" expanded="true" height="103" name="Filter Examples (2)" width="90" x="45" y="34">
+            <parameter key="parameter_string" value="?"/>
+            <parameter key="parameter_expression" value=""/>
+            <parameter key="condition_class" value="custom_filters"/>
+            <parameter key="invert_filter" value="false"/>
+            <list key="filters_list">
+              <parameter key="filters_entry_key" value="X Coordinate.is_not_missing."/>
+              <parameter key="filters_entry_key" value="Y Coordinate.is_not_missing."/>
+              <parameter key="filters_entry_key" value="Community Area.is_not_missing."/>
+              <parameter key="filters_entry_key" value="Location Description.is_not_missing."/>
+            </list>
+            <parameter key="filters_logic_and" value="true"/>
+            <parameter key="filters_check_metadata" value="true"/>
+          </operator>
+          <operator activated="true" class="blending:generate_columns" compatibility="11.0.000" expanded="true" height="82" name="New Atrributes (2)" width="90" x="246" y="34">
+            <list key="function_descriptions">
+              <parameter key="Dayofweek" value="date_str(Date,&quot;America/New_York&quot;,&quot;EEEE&quot;)"/>
+              <parameter key="Month" value="date_get(Date,DATE_UNIT_MONTH,&quot;America/New_York&quot;) + 1"/>
+              <parameter key="Hour_of_crime" value="parse(date_str(Date,&quot;America/New_York&quot;,&quot;K&quot;))"/>
+              <parameter key="Season" value="if((Month== 3) || (Month == 4) ||  (Month== 5), &quot;Spring&quot;,&#13;&#10;if( (Month== 6) ||  (Month== 7) ||  (Month == 8),&quot;Summer&quot;,&#13;&#10;if( (Month== 9) ||  (Month == 10) ||  (Month== 11),&quot;Fall&quot;,&#13;&#10;&quot;Winter&quot;)))"/>
+              <parameter key="Crime_Category" value="if(&#10;    (equals([Primary Type], &quot;ASSAULT&quot;) || equals([Primary Type], &quot;BATTERY&quot;) || &#10;     equals([Primary Type], &quot;HOMICIDE&quot;) || equals([Primary Type], &quot;KIDNAPPING&quot;) || &#10;     equals([Primary Type], &quot;INTIMIDATION&quot;) || equals([Primary Type], &quot;STALKING&quot;)), &#10;    &quot;Violent Crime&quot;,&#10;&#10;    if(&#10;        (equals([Primary Type], &quot;THEFT&quot;) || equals([Primary Type], &quot;BURGLARY&quot;) || &#10;         equals([Primary Type], &quot;ROBBERY&quot;) || equals([Primary Type], &quot;MOTOR VEHICLE THEFT&quot;) || &#10;         equals([Primary Type], &quot;CRIMINAL DAMAGE&quot;) || equals([Primary Type], &quot;ARSON&quot;) || &#10;         equals([Primary Type], &quot;CRIMINAL TRESPASS&quot;)), &#10;        &quot;Property Crime&quot;,&#10;&#10;        if(&#10;            (equals([Primary Type], &quot;CRIMINAL SEXUAL ASSAULT&quot;) || equals([Primary Type], &quot;SEX OFFENSE&quot;) || &#10;             equals([Primary Type], &quot;PROSTITUTION&quot;) || equals([Primary Type], &quot;OFFENSE INVOLVING CHILDREN&quot;) || &#10;             equals([Primary Type], &quot;PUBLIC INDECENCY&quot;) || equals([Primary Type], &quot;OBSCENITY&quot;)), &#10;            &quot;Sex &amp; Child-Related Crime&quot;,&#10;&#10;            if(&#10;                (equals([Primary Type], &quot;NARCOTICS&quot;) || equals([Primary Type], &quot;LIQUOR LAW VIOLATION&quot;)),&#10;                 &#10;                &quot;Drug &amp; Alcohol&quot;,&#10;                if&#10;                ((equals([Primary Type], &quot;GAMBLING&quot;) || equals([Primary Type], &quot;DECEPTIVE PRACTICE&quot;)),&#10;                 &quot;Fraud &amp; Deception&quot;,&#10;           &#10;&#10;                    if(&#10;                        (&#10;                        equals([Primary Type], &quot;WEAPONS VIOLATION&quot;) || equals([Primary Type], &quot;PUBLIC PEACE VIOLATION&quot;) || &#10;                        equals([Primary Type], &quot;INTERFERENCE WITH PUBLIC OFFICER&quot;) || &#10;                        equals([Primary Type], &quot;CONCEALED CARRY LICENSE VIOLATION&quot;)), &#10;                        &quot;Public Offense&quot;,&#10;                        &#10;                        &quot;OTHER OFFENSE&quot;&#10;                    )&#10;                )&#10;            )&#10;        )&#10;    )&#10;)"/>
+              <parameter key="Year" value="date_str(Date,&quot;America/New_York&quot;,&quot;yyyy&quot;)"/>
+              <parameter key="Location_Category" value="if(contains(lower([Location Description]), &quot;residence&quot;) || contains(lower([Location Description]), &quot;apartment&quot;) || contains(lower([Location Description]), &quot;residential&quot;) || contains(lower([Location Description]), &quot;house&quot;) || contains(lower([Location Description]), &quot;college/university residence&quot;) || contains(lower([Location Description]), &quot;nursing home&quot;) || contains(lower([Location Description]), &quot;retirement home&quot;), &quot;Residential Area&quot;, &#10;&#10;   if(contains(lower([Location Description]), &quot;street&quot;) || contains(lower([Location Description]), &quot;parking&quot;) || contains(lower([Location Description]), &quot;cta bus&quot;) || contains(lower([Location Description]), &quot;cta station&quot;) || contains(lower([Location Description]), &quot;cta platform&quot;) || contains(lower([Location Description]), &quot;cta train&quot;) || contains(lower([Location Description]), &quot;airport&quot;) || contains(lower([Location Description]), &quot;taxicab&quot;) || contains(lower([Location Description]), &quot;vehicle&quot;), &quot;Transportation &amp; Parking&quot;,&#10;&#10;      if(contains(lower([Location Description]), &quot;grocery&quot;) || contains(lower([Location Description]), &quot;food store&quot;) || contains(lower([Location Description]), &quot;department store&quot;) || contains(lower([Location Description]), &quot;retail store&quot;) || contains(lower([Location Description]), &quot;convenience store&quot;) || contains(lower([Location Description]), &quot;restaurant&quot;) || contains(lower([Location Description]), &quot;bar&quot;) || contains(lower([Location Description]), &quot;tavern&quot;) || contains(lower([Location Description]), &quot;drug store&quot;) || contains(lower([Location Description]), &quot;gas station&quot;) || contains(lower([Location Description]), &quot;casino&quot;) || contains(lower([Location Description]), &quot;barbershop&quot;) || contains(lower([Location Description]), &quot;salon&quot;) || contains(lower([Location Description]), &quot;movie house&quot;) || contains(lower([Location Description]), &quot;theater&quot;) || contains(lower([Location Description]), &quot;gambling establishment&quot;), &quot;Retail &amp; Commercial&quot;,&#10;&#10;         if(contains(lower([Location Description]), &quot;school&quot;) || contains(lower([Location Description]), &quot;library&quot;) || contains(lower([Location Description]), &quot;college/university&quot;) || contains(lower([Location Description]), &quot;church&quot;) || contains(lower([Location Description]), &quot;government building&quot;) || contains(lower([Location Description]), &quot;hospital&quot;) || contains(lower([Location Description]), &quot;police facility&quot;) || contains(lower([Location Description]), &quot;fire station&quot;) || contains(lower([Location Description]), &quot;day care center&quot;) || contains(lower([Location Description]), &quot;credit union&quot;) || contains(lower([Location Description]), &quot;currency exchange&quot;), &quot;Public &amp; Institutional&quot;,&#10;&#10;            if(contains(lower([Location Description]), &quot;factory&quot;) || contains(lower([Location Description]), &quot;manufacturing&quot;) || contains(lower([Location Description]), &quot;warehouse&quot;) || contains(lower([Location Description]), &quot;construction site&quot;) || contains(lower([Location Description]), &quot;abandoned building&quot;) || contains(lower([Location Description]), &quot;railroad property&quot;) || contains(lower([Location Description]), &quot;train depot&quot;) || contains(lower([Location Description]), &quot;airport building&quot;) || contains(lower([Location Description]), &quot;transportation system&quot;), &quot;Industrial &amp; Construction&quot;,&#10;&#10;               if(contains(lower([Location Description]), &quot;park&quot;) || contains(lower([Location Description]), &quot;stadium&quot;) || contains(lower([Location Description]), &quot;athletic club&quot;) || contains(lower([Location Description]), &quot;beach&quot;) || contains(lower([Location Description]), &quot;lakefront&quot;) || contains(lower([Location Description]), &quot;waterfront&quot;) || contains(lower([Location Description]), &quot;riverbank&quot;) || contains(lower([Location Description]), &quot;vacant lot&quot;) || contains(lower([Location Description]), &quot;forest preserve&quot;) || contains(lower([Location Description]), &quot;cemetery&quot;) || contains(lower([Location Description]), &quot;bridge&quot;) || contains(lower([Location Description]), &quot;animal hospital&quot;) || contains(lower([Location Description]), &quot;boat dealership&quot;) || contains(lower([Location Description]), &quot;gangway&quot;) || contains(lower([Location Description]), &quot;bowling alley&quot;), &quot;Outdoor &amp; Recreational&quot;,&#10;&#10;                  &quot;Other&quot;))))))"/>
+            </list>
+            <parameter key="keep_all_columns" value="true"/>
+            <parameter key="default_time_zone" value="America/Toronto"/>
+          </operator>
+          <operator activated="true" class="blending:set_role" compatibility="11.0.000" expanded="true" height="82" name="Set Role (4)" width="90" x="380" y="34">
+            <list key="set_roles">
+              <parameter key="Crime_Category" value="label"/>
+            </list>
+          </operator>
+          <operator activated="true" class="nominal_to_numerical" compatibility="11.0.000" expanded="true" height="103" name="Nominal to Numerical" width="90" x="581" y="34">
+            <parameter key="return_preprocessing_model" value="false"/>
+            <parameter key="attribute_filter_type" value="subset"/>
+            <parameter key="attribute" value="Domestic"/>
+            <parameter key="attributes" value="|Arrest|Domestic"/>
+            <parameter key="use_except_expression" value="false"/>
+            <parameter key="value_type" value="nominal"/>
+            <parameter key="use_value_type_exception" value="false"/>
+            <parameter key="except_value_type" value="file_path"/>
+            <parameter key="block_type" value="single_value"/>
+            <parameter key="use_block_type_exception" value="false"/>
+            <parameter key="except_block_type" value="single_value"/>
+            <parameter key="invert_selection" value="false"/>
+            <parameter key="include_special_attributes" value="true"/>
+            <parameter key="coding_type" value="dummy coding"/>
+            <parameter key="use_comparison_groups" value="false"/>
+            <list key="comparison_groups"/>
+            <parameter key="unexpected_value_handling" value="all 0 and warning"/>
+            <parameter key="use_underscore_in_name" value="false"/>
+          </operator>
+          <operator activated="true" class="discretize_by_user_specification" compatibility="11.0.000" expanded="true" height="103" name="Discretize(TIME OF CRIME) (2)" width="90" x="782" y="34">
+            <parameter key="return_preprocessing_model" value="false"/>
+            <parameter key="attribute_filter_type" value="single"/>
+            <parameter key="attribute" value="Hour_of_crime"/>
+            <parameter key="attributes" value=""/>
+            <parameter key="use_except_expression" value="false"/>
+            <parameter key="value_type" value="numeric"/>
+            <parameter key="use_value_type_exception" value="false"/>
+            <parameter key="except_value_type" value="real"/>
+            <parameter key="block_type" value="value_series"/>
+            <parameter key="use_block_type_exception" value="false"/>
+            <parameter key="except_block_type" value="value_series_end"/>
+            <parameter key="invert_selection" value="false"/>
+            <parameter key="include_special_attributes" value="false"/>
+            <list key="classes">
+              <parameter key="Late Night" value="6.0"/>
+              <parameter key="Morning" value="12.0"/>
+              <parameter key="Afternoon" value="18.0"/>
+              <parameter key="Evening" value="24.0"/>
+            </list>
+          </operator>
+          <operator activated="true" class="blending:select_attributes" compatibility="11.0.000" expanded="true" height="82" name="Atributes for Tree Prep (2)" width="90" x="983" y="34">
+            <parameter key="type" value="include attributes"/>
+            <parameter key="attribute_filter_type" value="a subset"/>
+            <parameter key="select_attribute" value=""/>
+            <parameter key="select_subset" value="Arrest = false␞Arrest = true␞Beat␞Community Area␞Crime_Category␞Dayofweek␞Domestic = false␞Domestic = true␞FBI Code␞Hour_of_crime␞ID␞Location_Category␞Month␞Season␞X Coordinate␞Y Coordinate␞Year"/>
+            <parameter key="also_apply_to_special_attributes_(id,_label..)" value="false"/>
+          </operator>
+          <connect from_port="in 1" to_op="Filter Examples (2)" to_port="example set input"/>
+          <connect from_op="Filter Examples (2)" from_port="example set output" to_op="New Atrributes (2)" to_port="table input"/>
+          <connect from_op="New Atrributes (2)" from_port="table output" to_op="Set Role (4)" to_port="example set input"/>
+          <connect from_op="Set Role (4)" from_port="example set output" to_op="Nominal to Numerical" to_port="example set input"/>
+          <connect from_op="Nominal to Numerical" from_port="example set output" to_op="Discretize(TIME OF CRIME) (2)" to_port="example set input"/>
+          <connect from_op="Discretize(TIME OF CRIME) (2)" from_port="example set output" to_op="Atributes for Tree Prep (2)" to_port="example set input"/>
+          <connect from_op="Atributes for Tree Prep (2)" from_port="example set output" to_port="out 1"/>
+          <portSpacing port="source_in 1" spacing="0"/>
+          <portSpacing port="source_in 2" spacing="0"/>
+          <portSpacing port="sink_out 1" spacing="0"/>
+          <portSpacing port="sink_out 2" spacing="0"/>
+          <description align="center" color="yellow" colored="false" height="95" resized="false" width="119" x="33" y="138">Filting no missing values based on attribute customiztion&lt;br/&gt;</description>
+          <description align="center" color="yellow" colored="false" height="113" resized="false" width="128" x="226" y="121">Created new attributes based on date and primary type to improve understanding and enhance decision tree performance.</description>
+          <description align="center" color="yellow" colored="false" height="83" resized="false" width="111" x="371" y="116">Set role as Category_Crime as label</description>
+          <description align="center" color="yellow" colored="false" height="98" resized="false" width="172" x="544" y="137">Categorial Values to Numeric ( Arrest and Domestic )</description>
+          <description align="center" color="yellow" colored="false" height="105" resized="false" width="180" x="745" y="138">Discretize Using Binnig for Hours of the crimes</description>
+        </process>
+      </operator>
       <connect from_op="Retrieve ChicagoCrimeData_2019_2024_FilteredStratified" from_port="output" to_op="General Preparation" to_port="in 1"/>
       <connect from_op="General Preparation" from_port="out 1" to_op="Multiply" to_port="input"/>
       <connect from_op="General Preparation" from_port="out 2" to_port="result 2"/>
       <connect from_op="General Preparation" from_port="out 3" to_port="result 3"/>
       <connect from_op="Multiply" from_port="output 1" to_port="result 1"/>
       <connect from_op="Multiply" from_port="output 2" to_op="KNN PREPARATION &amp; PROCESS (2)" to_port="in 1"/>
-      <connect from_op="Multiply" from_port="output 3" to_op="DT PREPARATION &amp; PROCESS" to_port="in 1"/>
+      <connect from_op="Multiply" from_port="output 3" to_op="DT PREPARATION &amp; PROCESS (2)" to_port="in 1"/>
       <connect from_op="Multiply" from_port="output 4" to_op="CLUSTERING PREPARATION &amp; PROCESS" to_port="in 1"/>
       <connect from_op="Multiply" from_port="output 5" to_op="OUTLIER DETECTION PREPARATION &amp; PROCESS" to_port="in 1"/>
       <connect from_op="CLUSTERING PREPARATION &amp; PROCESS" from_port="out 1" to_port="result 5"/>
