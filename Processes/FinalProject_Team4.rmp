@@ -60,162 +60,202 @@
           <portSpacing port="sink_out 1" spacing="0"/>
         </process>
       </operator>
-      <operator activated="true" class="subprocess" compatibility="11.0.000" expanded="true" height="145" name="KNN PREPARATION &amp; PROCESS" width="90" x="648" y="85">
+      <operator activated="true" class="subprocess" compatibility="11.0.000" expanded="true" height="103" name="KNN PREPARATION &amp; PROCESS" width="90" x="648" y="85">
         <process expanded="true">
           <operator activated="true" class="blending:select_attributes" compatibility="11.0.000" expanded="true" height="82" name="Select Attributes (2)" width="90" x="45" y="34">
             <parameter key="type" value="exclude attributes"/>
             <parameter key="attribute_filter_type" value="a subset"/>
             <parameter key="select_attribute" value=""/>
-            <parameter key="select_subset" value="Beat␞Block␞Case Number␞Community Area␞FBI Code␞IUCR␞Location␞Updated On␞Ward␞X Coordinate␞Y Coordinate␞ï»¿ID␞Year"/>
+            <parameter key="select_subset" value="Beat␞Block␞Case Number␞Community Area␞District␞FBI Code␞IUCR␞Location␞Updated On␞Ward␞Year␞ï»¿ID␞Longitude␞Latitude"/>
             <parameter key="also_apply_to_special_attributes_(id,_label..)" value="false"/>
           </operator>
-          <operator activated="true" class="remove_duplicates" compatibility="11.0.000" expanded="true" height="103" name="Remove Duplicates" width="90" x="179" y="34">
-            <parameter key="attribute_filter_type" value="all"/>
-            <parameter key="attribute" value=""/>
-            <parameter key="attributes" value=""/>
-            <parameter key="use_except_expression" value="false"/>
-            <parameter key="value_type" value="attribute_value"/>
-            <parameter key="use_value_type_exception" value="false"/>
-            <parameter key="except_value_type" value="time"/>
-            <parameter key="block_type" value="attribute_block"/>
-            <parameter key="use_block_type_exception" value="false"/>
-            <parameter key="except_block_type" value="value_matrix_row_start"/>
-            <parameter key="invert_selection" value="false"/>
-            <parameter key="include_special_attributes" value="false"/>
-            <parameter key="treat_missing_values_as_duplicates" value="false"/>
-          </operator>
-          <operator activated="true" class="filter_examples" compatibility="11.0.000" expanded="true" height="103" name="Remove missing val" width="90" x="313" y="34">
-            <parameter key="parameter_expression" value=""/>
-            <parameter key="condition_class" value="custom_filters"/>
-            <parameter key="invert_filter" value="false"/>
-            <list key="filters_list">
-              <parameter key="filters_entry_key" value="Location Description.is_not_missing."/>
-              <parameter key="filters_entry_key" value="Longitude.is_not_missing."/>
-              <parameter key="filters_entry_key" value="Latitude.is_not_missing."/>
-            </list>
-            <parameter key="filters_logic_and" value="true"/>
-            <parameter key="filters_check_metadata" value="true"/>
-          </operator>
-          <operator activated="true" class="blending:rename" compatibility="11.0.000" expanded="true" height="82" name="Rename" width="90" x="447" y="34">
-            <list key="rename attributes">
-              <parameter key="Description" value="CrimeDescription"/>
-              <parameter key="Primary Type" value="PrimaryCrimeType"/>
-              <parameter key="Location Description" value="LocationDescription"/>
-            </list>
-            <parameter key="from_attribute" value=""/>
-            <parameter key="to_attribute" value=""/>
-          </operator>
-          <operator activated="true" class="blending:set_role" compatibility="11.0.000" expanded="true" height="82" name="Set Role (2)" width="90" x="581" y="34">
-            <list key="set_roles">
-              <parameter key="Arrest" value="label"/>
-            </list>
-          </operator>
-          <operator activated="true" class="subprocess" compatibility="11.0.000" expanded="true" height="82" name="(Date Processing)" width="90" x="715" y="34">
+          <operator activated="true" class="subprocess" compatibility="11.0.000" expanded="true" height="103" name="Clean data" width="90" x="179" y="34">
             <process expanded="true">
-              <operator activated="true" class="date_to_numerical" compatibility="11.0.000" expanded="true" height="82" name="Date to Numerical" width="90" x="45" y="34">
-                <parameter key="attribute_name" value="Date"/>
-                <parameter key="time_unit" value="year"/>
-                <parameter key="millisecond_relative_to" value="second"/>
-                <parameter key="second_relative_to" value="minute"/>
-                <parameter key="minute_relative_to" value="hour"/>
-                <parameter key="hour_relative_to" value="day"/>
-                <parameter key="day_relative_to" value="month"/>
-                <parameter key="week_relative_to" value="year"/>
-                <parameter key="month_relative_to" value="year"/>
-                <parameter key="quarter_relative_to" value="year"/>
-                <parameter key="half_year_relative_to" value="year"/>
-                <parameter key="year_relative_to" value="era"/>
-                <parameter key="keep_old_attribute" value="true"/>
+              <operator activated="true" class="remove_duplicates" compatibility="11.0.000" expanded="true" height="103" name="Remove Duplicates" width="90" x="179" y="34">
+                <parameter key="attribute_filter_type" value="subset"/>
+                <parameter key="attribute" value=""/>
+                <parameter key="attributes" value="|Arrest|Date|Primary Type|Description|Domestic|Location Description|X Coordinate|Y Coordinate"/>
+                <parameter key="use_except_expression" value="false"/>
+                <parameter key="value_type" value="attribute_value"/>
+                <parameter key="use_value_type_exception" value="false"/>
+                <parameter key="except_value_type" value="time"/>
+                <parameter key="block_type" value="attribute_block"/>
+                <parameter key="use_block_type_exception" value="false"/>
+                <parameter key="except_block_type" value="value_matrix_row_start"/>
+                <parameter key="invert_selection" value="false"/>
+                <parameter key="include_special_attributes" value="false"/>
+                <parameter key="treat_missing_values_as_duplicates" value="false"/>
               </operator>
-              <operator activated="true" class="date_to_numerical" compatibility="11.0.000" expanded="true" height="82" name="Date to Numerical (2)" width="90" x="179" y="34">
-                <parameter key="attribute_name" value="Date"/>
-                <parameter key="time_unit" value="month"/>
-                <parameter key="millisecond_relative_to" value="second"/>
-                <parameter key="second_relative_to" value="minute"/>
-                <parameter key="minute_relative_to" value="hour"/>
-                <parameter key="hour_relative_to" value="day"/>
-                <parameter key="day_relative_to" value="month"/>
-                <parameter key="week_relative_to" value="year"/>
-                <parameter key="month_relative_to" value="year"/>
-                <parameter key="quarter_relative_to" value="year"/>
-                <parameter key="half_year_relative_to" value="year"/>
-                <parameter key="year_relative_to" value="era"/>
-                <parameter key="keep_old_attribute" value="true"/>
+              <operator activated="true" class="filter_examples" compatibility="11.0.000" expanded="true" height="103" name="Remove missing val" width="90" x="313" y="34">
+                <parameter key="parameter_expression" value=""/>
+                <parameter key="condition_class" value="custom_filters"/>
+                <parameter key="invert_filter" value="false"/>
+                <list key="filters_list">
+                  <parameter key="filters_entry_key" value="Location Description.is_not_missing."/>
+                  <parameter key="filters_entry_key" value="X Coordinate.is_not_missing."/>
+                  <parameter key="filters_entry_key" value="Y Coordinate.is_not_missing."/>
+                </list>
+                <parameter key="filters_logic_and" value="true"/>
+                <parameter key="filters_check_metadata" value="true"/>
               </operator>
-              <operator activated="true" class="date_to_numerical" compatibility="11.0.000" expanded="true" height="82" name="Date to Numerical (3)" width="90" x="313" y="34">
-                <parameter key="attribute_name" value="Date"/>
-                <parameter key="time_unit" value="hour"/>
-                <parameter key="millisecond_relative_to" value="second"/>
-                <parameter key="second_relative_to" value="minute"/>
-                <parameter key="minute_relative_to" value="hour"/>
-                <parameter key="hour_relative_to" value="day"/>
-                <parameter key="day_relative_to" value="month"/>
-                <parameter key="week_relative_to" value="year"/>
-                <parameter key="month_relative_to" value="year"/>
-                <parameter key="quarter_relative_to" value="year"/>
-                <parameter key="half_year_relative_to" value="year"/>
-                <parameter key="year_relative_to" value="era"/>
-                <parameter key="keep_old_attribute" value="false"/>
-              </operator>
-              <operator activated="true" class="blending:rename" compatibility="11.0.000" expanded="true" height="82" name="Rename (2)" width="90" x="447" y="34">
+              <connect from_port="in 1" to_op="Remove Duplicates" to_port="example set input"/>
+              <connect from_op="Remove Duplicates" from_port="example set output" to_op="Remove missing val" to_port="example set input"/>
+              <connect from_op="Remove missing val" from_port="example set output" to_port="out 1"/>
+              <connect from_op="Remove missing val" from_port="unmatched example set" to_port="out 2"/>
+              <portSpacing port="source_in 1" spacing="0"/>
+              <portSpacing port="source_in 2" spacing="0"/>
+              <portSpacing port="sink_out 1" spacing="0"/>
+              <portSpacing port="sink_out 2" spacing="0"/>
+              <portSpacing port="sink_out 3" spacing="0"/>
+            </process>
+          </operator>
+          <operator activated="true" class="subprocess" compatibility="11.0.000" expanded="true" height="82" name="Construct data" width="90" x="313" y="34">
+            <process expanded="true">
+              <operator activated="true" class="blending:rename" compatibility="11.0.000" expanded="true" height="82" name="Rename" width="90" x="45" y="34">
                 <list key="rename attributes">
-                  <parameter key="Date" value="Hour"/>
-                  <parameter key="Date_month" value="Month"/>
-                  <parameter key="Date_year" value="Year"/>
+                  <parameter key="Description" value="CrimeDescription"/>
+                  <parameter key="Primary Type" value="PrimaryCrimeType"/>
+                  <parameter key="Location Description" value="LocationDescription"/>
                 </list>
                 <parameter key="from_attribute" value=""/>
                 <parameter key="to_attribute" value=""/>
               </operator>
-              <operator activated="true" class="blending:generate_columns" compatibility="11.0.000" expanded="true" height="82" name="Generate Attributes (4)" width="90" x="581" y="34">
+              <operator activated="true" class="blending:set_role" compatibility="11.0.000" expanded="true" height="82" name="Set Role (2)" width="90" x="179" y="34">
+                <list key="set_roles">
+                  <parameter key="Arrest" value="label"/>
+                </list>
+              </operator>
+              <operator activated="true" class="subprocess" compatibility="11.0.000" expanded="true" height="82" name="(Date Processing)" width="90" x="313" y="34">
+                <process expanded="true">
+                  <operator activated="true" class="date_to_numerical" compatibility="11.0.000" expanded="true" height="82" name="Date to Numerical" width="90" x="45" y="34">
+                    <parameter key="attribute_name" value="Date"/>
+                    <parameter key="time_unit" value="year"/>
+                    <parameter key="millisecond_relative_to" value="second"/>
+                    <parameter key="second_relative_to" value="minute"/>
+                    <parameter key="minute_relative_to" value="hour"/>
+                    <parameter key="hour_relative_to" value="day"/>
+                    <parameter key="day_relative_to" value="month"/>
+                    <parameter key="week_relative_to" value="year"/>
+                    <parameter key="month_relative_to" value="year"/>
+                    <parameter key="quarter_relative_to" value="year"/>
+                    <parameter key="half_year_relative_to" value="year"/>
+                    <parameter key="year_relative_to" value="era"/>
+                    <parameter key="keep_old_attribute" value="true"/>
+                  </operator>
+                  <operator activated="true" class="date_to_numerical" compatibility="11.0.000" expanded="true" height="82" name="Date to Numerical (2)" width="90" x="179" y="34">
+                    <parameter key="attribute_name" value="Date"/>
+                    <parameter key="time_unit" value="month"/>
+                    <parameter key="millisecond_relative_to" value="second"/>
+                    <parameter key="second_relative_to" value="minute"/>
+                    <parameter key="minute_relative_to" value="hour"/>
+                    <parameter key="hour_relative_to" value="day"/>
+                    <parameter key="day_relative_to" value="month"/>
+                    <parameter key="week_relative_to" value="year"/>
+                    <parameter key="month_relative_to" value="year"/>
+                    <parameter key="quarter_relative_to" value="year"/>
+                    <parameter key="half_year_relative_to" value="year"/>
+                    <parameter key="year_relative_to" value="era"/>
+                    <parameter key="keep_old_attribute" value="true"/>
+                  </operator>
+                  <operator activated="true" class="date_to_numerical" compatibility="11.0.000" expanded="true" height="82" name="Date to Numerical (3)" width="90" x="313" y="34">
+                    <parameter key="attribute_name" value="Date"/>
+                    <parameter key="time_unit" value="hour"/>
+                    <parameter key="millisecond_relative_to" value="second"/>
+                    <parameter key="second_relative_to" value="minute"/>
+                    <parameter key="minute_relative_to" value="hour"/>
+                    <parameter key="hour_relative_to" value="day"/>
+                    <parameter key="day_relative_to" value="month"/>
+                    <parameter key="week_relative_to" value="year"/>
+                    <parameter key="month_relative_to" value="year"/>
+                    <parameter key="quarter_relative_to" value="year"/>
+                    <parameter key="half_year_relative_to" value="year"/>
+                    <parameter key="year_relative_to" value="era"/>
+                    <parameter key="keep_old_attribute" value="false"/>
+                  </operator>
+                  <operator activated="true" class="blending:rename" compatibility="11.0.000" expanded="true" height="82" name="Rename (2)" width="90" x="447" y="34">
+                    <list key="rename attributes">
+                      <parameter key="Date" value="Hour"/>
+                      <parameter key="Date_month" value="Month"/>
+                      <parameter key="Date_year" value="Year"/>
+                    </list>
+                    <parameter key="from_attribute" value=""/>
+                    <parameter key="to_attribute" value=""/>
+                  </operator>
+                  <operator activated="true" class="blending:generate_columns" compatibility="11.0.000" expanded="true" height="82" name="Generate Attributes (4)" width="90" x="581" y="34">
+                    <list key="function_descriptions">
+                      <parameter key="Time of the day" value="if(Hour &gt;= 0 &amp;&amp; Hour &lt; 6, &quot;Night&quot;, &#10;   if(Hour &gt;= 6 &amp;&amp; Hour &lt; 12, &quot;Morning&quot;, &#10;      if(Hour &gt;= 12 &amp;&amp; Hour &lt; 18, &quot;Afternoon&quot;, &#10;         &quot;Evening&quot;)))"/>
+                      <parameter key="Seasons" value="if (Month &gt;= 3 &amp;&amp; Month &lt;= 5, &quot;Spring&quot;, &#10;    if (Month &gt;= 6 &amp;&amp; Month &lt;= 8, &quot;Summer&quot;, &#10;        if (Month &gt;= 9 &amp;&amp; Month &lt;= 11, &quot;Autumn&quot;, &quot;Winter&quot;)))"/>
+                    </list>
+                    <parameter key="keep_all_columns" value="true"/>
+                    <parameter key="default_time_zone" value="America/Toronto"/>
+                  </operator>
+                  <operator activated="true" class="numerical_to_polynominal" compatibility="11.0.000" expanded="true" height="82" name="Numerical to Polynominal" width="90" x="715" y="34">
+                    <parameter key="attribute_filter_type" value="single"/>
+                    <parameter key="attribute" value="Year"/>
+                    <parameter key="attributes" value=""/>
+                    <parameter key="use_except_expression" value="false"/>
+                    <parameter key="value_type" value="numeric"/>
+                    <parameter key="use_value_type_exception" value="false"/>
+                    <parameter key="except_value_type" value="real"/>
+                    <parameter key="block_type" value="value_series"/>
+                    <parameter key="use_block_type_exception" value="false"/>
+                    <parameter key="except_block_type" value="value_series_end"/>
+                    <parameter key="invert_selection" value="false"/>
+                    <parameter key="include_special_attributes" value="false"/>
+                  </operator>
+                  <operator activated="true" class="blending:select_attributes" compatibility="11.0.000" expanded="true" height="82" name="Select Attributes (4)" width="90" x="849" y="34">
+                    <parameter key="type" value="exclude attributes"/>
+                    <parameter key="attribute_filter_type" value="a subset"/>
+                    <parameter key="select_attribute" value=""/>
+                    <parameter key="select_subset" value="Hour␞Month"/>
+                    <parameter key="also_apply_to_special_attributes_(id,_label..)" value="false"/>
+                  </operator>
+                  <connect from_port="in 1" to_op="Date to Numerical" to_port="example set input"/>
+                  <connect from_op="Date to Numerical" from_port="example set output" to_op="Date to Numerical (2)" to_port="example set input"/>
+                  <connect from_op="Date to Numerical (2)" from_port="example set output" to_op="Date to Numerical (3)" to_port="example set input"/>
+                  <connect from_op="Date to Numerical (3)" from_port="example set output" to_op="Rename (2)" to_port="example set input"/>
+                  <connect from_op="Rename (2)" from_port="example set output" to_op="Generate Attributes (4)" to_port="table input"/>
+                  <connect from_op="Generate Attributes (4)" from_port="table output" to_op="Numerical to Polynominal" to_port="example set input"/>
+                  <connect from_op="Numerical to Polynominal" from_port="example set output" to_op="Select Attributes (4)" to_port="example set input"/>
+                  <connect from_op="Select Attributes (4)" from_port="example set output" to_port="out 1"/>
+                  <portSpacing port="source_in 1" spacing="0"/>
+                  <portSpacing port="source_in 2" spacing="0"/>
+                  <portSpacing port="sink_out 1" spacing="0"/>
+                  <portSpacing port="sink_out 2" spacing="0"/>
+                </process>
+              </operator>
+              <operator activated="true" class="blending:generate_columns" compatibility="11.0.000" expanded="true" height="82" name="Generate Attributes" width="90" x="447" y="34">
                 <list key="function_descriptions">
-                  <parameter key="Time of the day" value="if(Hour &gt;= 0 &amp;&amp; Hour &lt; 6, &quot;Night&quot;, &#10;   if(Hour &gt;= 6 &amp;&amp; Hour &lt; 12, &quot;Morning&quot;, &#10;      if(Hour &gt;= 12 &amp;&amp; Hour &lt; 18, &quot;Afternoon&quot;, &#10;         &quot;Evening&quot;)))"/>
-                  <parameter key="Seasons" value="if (Month &gt;= 3 &amp;&amp; Month &lt;= 5, &quot;Spring&quot;, &#10;    if (Month &gt;= 6 &amp;&amp; Month &lt;= 8, &quot;Summer&quot;, &#10;        if (Month &gt;= 9 &amp;&amp; Month &lt;= 11, &quot;Autumn&quot;, &quot;Winter&quot;)))"/>
-                  <parameter key="Year" value="if(Year &lt;= 2020, &quot;Pre-Pandemic&quot;,  &#10;   if(Year &lt;= 2022, &quot;Pandemic Recovery&quot;, &quot;Recent Years&quot;))"/>
+                  <parameter key="PrimeCrimeCategory" value="if (PrimaryCrimeType == &quot;THEFT&quot; || PrimaryCrimeType == &quot;MOTOR VEHICLE THEFT&quot; || PrimaryCrimeType == &quot;BURGLARY&quot; || PrimaryCrimeType == &quot;CRIMINAL DAMAGE&quot; || PrimaryCrimeType == &quot;CRIMINAL TRESPASS&quot; || PrimaryCrimeType == &quot;ARSON&quot;, &quot;Theft &amp; Property Crimes&quot;,&#10;    if (PrimaryCrimeType == &quot;BATTERY&quot; || PrimaryCrimeType == &quot;ASSAULT&quot; || PrimaryCrimeType == &quot;ROBBERY&quot; || PrimaryCrimeType == &quot;HOMICIDE&quot; || PrimaryCrimeType == &quot;STALKING&quot; || PrimaryCrimeType == &quot;KIDNAPPING&quot; || PrimaryCrimeType == &quot;CRIMINAL SEXUAL ASSAULT&quot; || PrimaryCrimeType == &quot;SEX OFFENSE&quot; || PrimaryCrimeType == &quot;INTIMIDATION&quot;, &quot;Violent Crimes&quot;,&#10;        if (PrimaryCrimeType == &quot;NARCOTICS&quot; || PrimaryCrimeType == &quot;OTHER NARCOTIC VIOLATION&quot;, &quot;Drug-related Crimes&quot;,&#10;            if (PrimaryCrimeType == &quot;DECEPTIVE PRACTICE&quot; || PrimaryCrimeType == &quot;GAMBLING&quot; || PrimaryCrimeType == &quot;OBSCENITY&quot; || PrimaryCrimeType == &quot;PROSTITUTION&quot;, &quot;Fraud &amp; Deception&quot;,&#10;                if (PrimaryCrimeType == &quot;PUBLIC PEACE VIOLATION&quot; || PrimaryCrimeType == &quot;INTERFERENCE WITH PUBLIC OFFICER&quot; || PrimaryCrimeType == &quot;CONCEALED CARRY LICENSE VIOLATION&quot; || PrimaryCrimeType == &quot;LIQUOR LAW VIOLATION&quot; || PrimaryCrimeType == &quot;PUBLIC INDECENCY&quot;, &quot;Public Order &amp; Safety&quot;,&#10;                    if (PrimaryCrimeType == &quot;WEAPONS VIOLATION&quot;, &quot;Weapons Crimes&quot;,&#10;                        if (PrimaryCrimeType == &quot;OTHER OFFENSE&quot;, &quot;Other Offenses&quot;,&#10;                            if (PrimaryCrimeType == &quot;OFFENSE INVOLVING CHILDREN&quot;, &quot;Child-related Offenses&quot;,&#10;                                if (PrimaryCrimeType == &quot;HUMAN TRAFFICKING&quot;, &quot;Human Trafficking&quot;, &quot;Unknown&quot;)))))))))"/>
+                  <parameter key="CrimeDescription" value="if (CrimeDescription == &quot;SIMPLE&quot; || CrimeDescription == &quot;DOMESTIC BATTERY SIMPLE&quot; || CrimeDescription == &quot;$500 AND UNDER&quot; || CrimeDescription == &quot;OVER $500&quot; || CrimeDescription == &quot;TO VEHICLE&quot; || CrimeDescription == &quot;AUTOMOBILE&quot; || CrimeDescription == &quot;TO PROPERTY&quot; || CrimeDescription == &quot;RETAIL THEFT&quot; || CrimeDescription == &quot;FROM BUILDING&quot; || CrimeDescription == &quot;AGGRAVATED - HANDGUN&quot;, &quot;Theft &amp; Property Crimes&quot;,&#10;    if (CrimeDescription == &quot;FORCIBLE ENTRY&quot; || CrimeDescription == &quot;UNLAWFUL POSSESSION - HANDGUN&quot; || CrimeDescription == &quot;TELEPHONE THREAT&quot; || CrimeDescription == &quot;ARMED - HANDGUN&quot; || CrimeDescription == &quot;TO LAND&quot; || CrimeDescription == &quot;FINANCIAL IDENTITY THEFT OVER $ 300&quot; || CrimeDescription == &quot;UNLAWFUL ENTRY&quot; || CrimeDescription == &quot;CREDIT CARD FRAUD&quot;, &quot;Fraud &amp; Identity Crimes&quot;,&#10;        if (CrimeDescription == &quot;HARASSMENT BY TELEPHONE&quot; || CrimeDescription == &quot;HARASSMENT BY ELECTRONIC MEANS&quot; || CrimeDescription == &quot;AGGRAVATED - OTHER DANGEROUS WEAPON&quot; || CrimeDescription == &quot;FRAUD OR CONFIDENCE GAME&quot; || CrimeDescription == &quot;FINANCIAL IDENTITY THEFT $300 AND UNDER&quot;, &quot;Harassment &amp; Fraud&quot;,&#10;            if (CrimeDescription == &quot;ATTEMPT - AUTOMOBILE&quot; || CrimeDescription == &quot;RECKLESS FIREARM DISCHARGE&quot; || CrimeDescription == &quot;AGGRAVATED - KNIFE / CUTTING INSTRUMENT&quot; || CrimeDescription == &quot;STRONG ARM - NO WEAPON&quot;, &quot;Attempt &amp; Reckless Crimes&quot;,&#10;                if (CrimeDescription == &quot;VIOLATE ORDER OF PROTECTION&quot; || CrimeDescription == &quot;POCKET-PICKING&quot; || CrimeDescription == &quot;ILLEGAL USE CASH CARD&quot; || CrimeDescription == &quot;THEFT / RECOVERY - AUTOMOBILE&quot;, &quot;Theft-related Offenses&quot;,&#10;                    if (CrimeDescription == &quot;NON-AGGRAVATED&quot; || CrimeDescription == &quot;TO RESIDENCE&quot; || CrimeDescription == &quot;OTHER VEHICLE OFFENSE&quot; || CrimeDescription == &quot;FORGERY&quot;, &quot;Miscellaneous Offenses&quot;,&#10;                        if (CrimeDescription == &quot;POSSESS - HEROIN (WHITE)&quot; || CrimeDescription == &quot;UNLAWFUL POSS OF HANDGUN&quot; || CrimeDescription == &quot;AGGRAVATED VEHICULAR HIJACKING&quot;, &quot;Drug &amp; Weapon Offenses&quot;,&#10;                            if (CrimeDescription == &quot;AGGRAVATED DOMESTIC BATTERY - OTHER DANGEROUS WEAPON&quot; || CrimeDescription == &quot;AGG. DOMESTIC BATTERY - HANDS, FISTS, FEET, SERIOUS INJURY&quot; || CrimeDescription == &quot;FALSE / STOLEN / ALTERED TRP&quot;, &quot;Domestic Violence &amp; Assault&quot;,&#10;                                if (CrimeDescription == &quot;FIRST DEGREE MURDER&quot; || CrimeDescription == &quot;AGGRAVATED: HANDGUN&quot; || CrimeDescription == &quot;FOUND SUSPECT NARCOTICS&quot;, &quot;Murder &amp; Major Crimes&quot;,&#10;                                    if (CrimeDescription == &quot;CRIMINAL DEFACEMENT&quot; || CrimeDescription == &quot;RECKLESS CONDUCT&quot; || CrimeDescription == &quot;ATTEMPT - FINANCIAL IDENTITY THEFT&quot;, &quot;Defacement &amp; Reckless Crimes&quot;,&#10;                                        if (CrimeDescription == &quot;POSSESS: HEROIN(WHITE)&quot; || CrimeDescription == &quot;PROTECTED EMPLOYEE - HANDS, FISTS, FEET, NO / MINOR INJURY&quot;, &quot;Drug Possession &amp; Employee Crimes&quot;, &quot;Other Crimes&quot;)))))))))))"/>
+                  <parameter key="LocationDescription" value="if(&#10;    (LocationDescription == &quot;STREET&quot; || LocationDescription == &quot;APARTMENT&quot; || LocationDescription == &quot;RESIDENCE&quot;),&#10;    &quot;Home_Street&quot;,&#10;    if(&#10;        (LocationDescription == &quot;SIDEWALK&quot; || LocationDescription == &quot;SMALL RETAIL STORE&quot;),&#10;        &quot;Sidewalk_Retail&quot;,&#10;        if(&#10;            (LocationDescription == &quot;PARKING LOT / GARAGE (NON RESIDENTIAL)&quot; || LocationDescription == &quot;ALLEY&quot; || LocationDescription == &quot;RESTAURANT&quot;),&#10;            &quot;Parking_Alley_Restaurant&quot;,&#10;            if(&#10;                (LocationDescription == &quot;DEPARTMENT STORE&quot; || LocationDescription == &quot;VEHICLE NON-COMMERCIAL&quot; || LocationDescription == &quot;GAS STATION&quot; || LocationDescription == &quot;OTHER (SPECIFY)&quot;),&#10;                &quot;Dept_Vehicle_Gas_Other&quot;,&#10;                if(&#10;                    (LocationDescription == &quot;COMMERCIAL / BUSINESS OFFICE&quot; || LocationDescription == &quot;GROCERY FOOD STORE&quot;),&#10;                    &quot;Commercial_Office_Grocery&quot;,&#10;                    if(&#10;                        (LocationDescription == &quot;RESIDENCE - PORCH / HALLWAY&quot; || LocationDescription == &quot;RESIDENCE - YARD (FRONT / BACK)&quot;),&#10;                        &quot;Residence_Porch_Yard&quot;,&#10;                        if(&#10;                            (LocationDescription == &quot;RESIDENCE - GARAGE&quot; || LocationDescription == &quot;OTHER&quot;),&#10;                            &quot;Residence_Garage_Other&quot;,&#10;                            if(&#10;                                (LocationDescription == &quot;BAR OR TAVERN&quot; || LocationDescription == &quot;CONVENIENCE STORE&quot;),&#10;                                &quot;Bar_Convenience&quot;,&#10;                                if(&#10;                                    (LocationDescription == &quot;PARK PROPERTY&quot; || LocationDescription == &quot;CTA TRAIN&quot; || LocationDescription == &quot;PARKING LOT/GARAGE(NON.RESID.)&quot;),&#10;                                    &quot;Park_CTA_Parking&quot;,&#10;                                    &quot;Miscellaneous&quot;&#10;                                )&#10;                            )&#10;                        )&#10;                    )&#10;                )&#10;            )&#10;        )&#10;    )&#10;)"/>
                 </list>
                 <parameter key="keep_all_columns" value="true"/>
                 <parameter key="default_time_zone" value="America/Toronto"/>
               </operator>
-              <operator activated="true" class="blending:select_attributes" compatibility="11.0.000" expanded="true" height="82" name="Select Attributes (4)" width="90" x="715" y="34">
-                <parameter key="type" value="exclude attributes"/>
-                <parameter key="attribute_filter_type" value="a subset"/>
-                <parameter key="select_attribute" value=""/>
-                <parameter key="select_subset" value="Hour␞Month"/>
-                <parameter key="also_apply_to_special_attributes_(id,_label..)" value="false"/>
-              </operator>
-              <connect from_port="in 1" to_op="Date to Numerical" to_port="example set input"/>
-              <connect from_op="Date to Numerical" from_port="example set output" to_op="Date to Numerical (2)" to_port="example set input"/>
-              <connect from_op="Date to Numerical (2)" from_port="example set output" to_op="Date to Numerical (3)" to_port="example set input"/>
-              <connect from_op="Date to Numerical (3)" from_port="example set output" to_op="Rename (2)" to_port="example set input"/>
-              <connect from_op="Rename (2)" from_port="example set output" to_op="Generate Attributes (4)" to_port="table input"/>
-              <connect from_op="Generate Attributes (4)" from_port="table output" to_op="Select Attributes (4)" to_port="example set input"/>
-              <connect from_op="Select Attributes (4)" from_port="example set output" to_port="out 1"/>
+              <connect from_port="in 1" to_op="Rename" to_port="example set input"/>
+              <connect from_op="Rename" from_port="example set output" to_op="Set Role (2)" to_port="example set input"/>
+              <connect from_op="Set Role (2)" from_port="example set output" to_op="(Date Processing)" to_port="in 1"/>
+              <connect from_op="(Date Processing)" from_port="out 1" to_op="Generate Attributes" to_port="table input"/>
+              <connect from_op="Generate Attributes" from_port="table output" to_port="out 1"/>
               <portSpacing port="source_in 1" spacing="0"/>
               <portSpacing port="source_in 2" spacing="0"/>
               <portSpacing port="sink_out 1" spacing="0"/>
               <portSpacing port="sink_out 2" spacing="0"/>
             </process>
           </operator>
-          <operator activated="true" class="blending:generate_columns" compatibility="11.0.000" expanded="true" height="82" name="Generate Attributes" width="90" x="849" y="34">
-            <list key="function_descriptions">
-              <parameter key="PrimeCrimeCategory" value="if (PrimaryCrimeType == &quot;THEFT&quot; || PrimaryCrimeType == &quot;MOTOR VEHICLE THEFT&quot; || PrimaryCrimeType == &quot;BURGLARY&quot; || PrimaryCrimeType == &quot;CRIMINAL DAMAGE&quot; || PrimaryCrimeType == &quot;CRIMINAL TRESPASS&quot; || PrimaryCrimeType == &quot;ARSON&quot;, &quot;Theft &amp; Property Crimes&quot;,&#10;    if (PrimaryCrimeType == &quot;BATTERY&quot; || PrimaryCrimeType == &quot;ASSAULT&quot; || PrimaryCrimeType == &quot;ROBBERY&quot; || PrimaryCrimeType == &quot;HOMICIDE&quot; || PrimaryCrimeType == &quot;STALKING&quot; || PrimaryCrimeType == &quot;KIDNAPPING&quot; || PrimaryCrimeType == &quot;CRIMINAL SEXUAL ASSAULT&quot; || PrimaryCrimeType == &quot;SEX OFFENSE&quot; || PrimaryCrimeType == &quot;INTIMIDATION&quot;, &quot;Violent Crimes&quot;,&#10;        if (PrimaryCrimeType == &quot;NARCOTICS&quot; || PrimaryCrimeType == &quot;OTHER NARCOTIC VIOLATION&quot;, &quot;Drug-related Crimes&quot;,&#10;            if (PrimaryCrimeType == &quot;DECEPTIVE PRACTICE&quot; || PrimaryCrimeType == &quot;GAMBLING&quot; || PrimaryCrimeType == &quot;OBSCENITY&quot; || PrimaryCrimeType == &quot;PROSTITUTION&quot;, &quot;Fraud &amp; Deception&quot;,&#10;                if (PrimaryCrimeType == &quot;PUBLIC PEACE VIOLATION&quot; || PrimaryCrimeType == &quot;INTERFERENCE WITH PUBLIC OFFICER&quot; || PrimaryCrimeType == &quot;CONCEALED CARRY LICENSE VIOLATION&quot; || PrimaryCrimeType == &quot;LIQUOR LAW VIOLATION&quot; || PrimaryCrimeType == &quot;PUBLIC INDECENCY&quot;, &quot;Public Order &amp; Safety&quot;,&#10;                    if (PrimaryCrimeType == &quot;WEAPONS VIOLATION&quot;, &quot;Weapons Crimes&quot;,&#10;                        if (PrimaryCrimeType == &quot;OTHER OFFENSE&quot;, &quot;Other Offenses&quot;,&#10;                            if (PrimaryCrimeType == &quot;OFFENSE INVOLVING CHILDREN&quot;, &quot;Child-related Offenses&quot;,&#10;                                if (PrimaryCrimeType == &quot;HUMAN TRAFFICKING&quot;, &quot;Human Trafficking&quot;, &quot;Unknown&quot;)))))))))"/>
-              <parameter key="CrimeDescription" value="if (CrimeDescription == &quot;SIMPLE&quot; || CrimeDescription == &quot;DOMESTIC BATTERY SIMPLE&quot; || CrimeDescription == &quot;$500 AND UNDER&quot; || CrimeDescription == &quot;OVER $500&quot; || CrimeDescription == &quot;TO VEHICLE&quot; || CrimeDescription == &quot;AUTOMOBILE&quot; || CrimeDescription == &quot;TO PROPERTY&quot; || CrimeDescription == &quot;RETAIL THEFT&quot; || CrimeDescription == &quot;FROM BUILDING&quot; || CrimeDescription == &quot;AGGRAVATED - HANDGUN&quot;, &quot;Theft &amp; Property Crimes&quot;,&#10;    if (CrimeDescription == &quot;FORCIBLE ENTRY&quot; || CrimeDescription == &quot;UNLAWFUL POSSESSION - HANDGUN&quot; || CrimeDescription == &quot;TELEPHONE THREAT&quot; || CrimeDescription == &quot;ARMED - HANDGUN&quot; || CrimeDescription == &quot;TO LAND&quot; || CrimeDescription == &quot;FINANCIAL IDENTITY THEFT OVER $ 300&quot; || CrimeDescription == &quot;UNLAWFUL ENTRY&quot; || CrimeDescription == &quot;CREDIT CARD FRAUD&quot;, &quot;Fraud &amp; Identity Crimes&quot;,&#10;        if (CrimeDescription == &quot;HARASSMENT BY TELEPHONE&quot; || CrimeDescription == &quot;HARASSMENT BY ELECTRONIC MEANS&quot; || CrimeDescription == &quot;AGGRAVATED - OTHER DANGEROUS WEAPON&quot; || CrimeDescription == &quot;FRAUD OR CONFIDENCE GAME&quot; || CrimeDescription == &quot;FINANCIAL IDENTITY THEFT $300 AND UNDER&quot;, &quot;Harassment &amp; Fraud&quot;,&#10;            if (CrimeDescription == &quot;ATTEMPT - AUTOMOBILE&quot; || CrimeDescription == &quot;RECKLESS FIREARM DISCHARGE&quot; || CrimeDescription == &quot;AGGRAVATED - KNIFE / CUTTING INSTRUMENT&quot; || CrimeDescription == &quot;STRONG ARM - NO WEAPON&quot;, &quot;Attempt &amp; Reckless Crimes&quot;,&#10;                if (CrimeDescription == &quot;VIOLATE ORDER OF PROTECTION&quot; || CrimeDescription == &quot;POCKET-PICKING&quot; || CrimeDescription == &quot;ILLEGAL USE CASH CARD&quot; || CrimeDescription == &quot;THEFT / RECOVERY - AUTOMOBILE&quot;, &quot;Theft-related Offenses&quot;,&#10;                    if (CrimeDescription == &quot;NON-AGGRAVATED&quot; || CrimeDescription == &quot;TO RESIDENCE&quot; || CrimeDescription == &quot;OTHER VEHICLE OFFENSE&quot; || CrimeDescription == &quot;FORGERY&quot;, &quot;Miscellaneous Offenses&quot;,&#10;                        if (CrimeDescription == &quot;POSSESS - HEROIN (WHITE)&quot; || CrimeDescription == &quot;UNLAWFUL POSS OF HANDGUN&quot; || CrimeDescription == &quot;AGGRAVATED VEHICULAR HIJACKING&quot;, &quot;Drug &amp; Weapon Offenses&quot;,&#10;                            if (CrimeDescription == &quot;AGGRAVATED DOMESTIC BATTERY - OTHER DANGEROUS WEAPON&quot; || CrimeDescription == &quot;AGG. DOMESTIC BATTERY - HANDS, FISTS, FEET, SERIOUS INJURY&quot; || CrimeDescription == &quot;FALSE / STOLEN / ALTERED TRP&quot;, &quot;Domestic Violence &amp; Assault&quot;,&#10;                                if (CrimeDescription == &quot;FIRST DEGREE MURDER&quot; || CrimeDescription == &quot;AGGRAVATED: HANDGUN&quot; || CrimeDescription == &quot;FOUND SUSPECT NARCOTICS&quot;, &quot;Murder &amp; Major Crimes&quot;,&#10;                                    if (CrimeDescription == &quot;CRIMINAL DEFACEMENT&quot; || CrimeDescription == &quot;RECKLESS CONDUCT&quot; || CrimeDescription == &quot;ATTEMPT - FINANCIAL IDENTITY THEFT&quot;, &quot;Defacement &amp; Reckless Crimes&quot;,&#10;                                        if (CrimeDescription == &quot;POSSESS: HEROIN(WHITE)&quot; || CrimeDescription == &quot;PROTECTED EMPLOYEE - HANDS, FISTS, FEET, NO / MINOR INJURY&quot;, &quot;Drug Possession &amp; Employee Crimes&quot;, &quot;Other Crimes&quot;)))))))))))"/>
-              <parameter key="LocationDescription" value="if(&#10;    (LocationDescription == &quot;STREET&quot; || LocationDescription == &quot;APARTMENT&quot; || LocationDescription == &quot;RESIDENCE&quot;),&#10;    &quot;Home_Street&quot;,&#10;    if(&#10;        (LocationDescription == &quot;SIDEWALK&quot; || LocationDescription == &quot;SMALL RETAIL STORE&quot;),&#10;        &quot;Sidewalk_Retail&quot;,&#10;        if(&#10;            (LocationDescription == &quot;PARKING LOT / GARAGE (NON RESIDENTIAL)&quot; || LocationDescription == &quot;ALLEY&quot; || LocationDescription == &quot;RESTAURANT&quot;),&#10;            &quot;Parking_Alley_Restaurant&quot;,&#10;            if(&#10;                (LocationDescription == &quot;DEPARTMENT STORE&quot; || LocationDescription == &quot;VEHICLE NON-COMMERCIAL&quot; || LocationDescription == &quot;GAS STATION&quot; || LocationDescription == &quot;OTHER (SPECIFY)&quot;),&#10;                &quot;Dept_Vehicle_Gas_Other&quot;,&#10;                if(&#10;                    (LocationDescription == &quot;COMMERCIAL / BUSINESS OFFICE&quot; || LocationDescription == &quot;GROCERY FOOD STORE&quot;),&#10;                    &quot;Commercial_Office_Grocery&quot;,&#10;                    if(&#10;                        (LocationDescription == &quot;RESIDENCE - PORCH / HALLWAY&quot; || LocationDescription == &quot;RESIDENCE - YARD (FRONT / BACK)&quot;),&#10;                        &quot;Residence_Porch_Yard&quot;,&#10;                        if(&#10;                            (LocationDescription == &quot;RESIDENCE - GARAGE&quot; || LocationDescription == &quot;OTHER&quot;),&#10;                            &quot;Residence_Garage_Other&quot;,&#10;                            if(&#10;                                (LocationDescription == &quot;BAR OR TAVERN&quot; || LocationDescription == &quot;CONVENIENCE STORE&quot;),&#10;                                &quot;Bar_Convenience&quot;,&#10;                                if(&#10;                                    (LocationDescription == &quot;PARK PROPERTY&quot; || LocationDescription == &quot;CTA TRAIN&quot; || LocationDescription == &quot;PARKING LOT/GARAGE(NON.RESID.)&quot;),&#10;                                    &quot;Park_CTA_Parking&quot;,&#10;                                    &quot;Miscellaneous&quot;&#10;                                )&#10;                            )&#10;                        )&#10;                    )&#10;                )&#10;            )&#10;        )&#10;    )&#10;)"/>
-            </list>
-            <parameter key="keep_all_columns" value="true"/>
-            <parameter key="default_time_zone" value="America/Toronto"/>
-          </operator>
-          <operator activated="true" class="blending:select_attributes" compatibility="11.0.000" expanded="true" height="82" name="Select Attributes (3)" width="90" x="983" y="34">
+          <operator activated="true" class="blending:select_attributes" compatibility="11.0.000" expanded="true" height="82" name="integrate data" width="90" x="447" y="34">
             <parameter key="type" value="exclude attributes"/>
             <parameter key="attribute_filter_type" value="one attribute"/>
             <parameter key="select_attribute" value="PrimaryCrimeType"/>
             <parameter key="select_subset" value=""/>
             <parameter key="also_apply_to_special_attributes_(id,_label..)" value="false"/>
           </operator>
-          <operator activated="true" class="normalize" compatibility="11.0.000" expanded="true" height="103" name="Normalize" width="90" x="1117" y="34">
+          <operator activated="true" class="normalize" compatibility="11.0.000" expanded="true" height="103" name="Normalize" width="90" x="581" y="34">
             <parameter key="return_preprocessing_model" value="false"/>
             <parameter key="attribute_filter_type" value="subset"/>
             <parameter key="attribute" value=""/>
-            <parameter key="attributes" value="District|Latitude|Longitude"/>
+            <parameter key="attributes" value="X Coordinate|Y Coordinate"/>
             <parameter key="use_except_expression" value="false"/>
             <parameter key="value_type" value="numeric"/>
             <parameter key="use_value_type_exception" value="false"/>
@@ -230,7 +270,7 @@
             <parameter key="max" value="1.0"/>
             <parameter key="allow_negative_values" value="false"/>
           </operator>
-          <operator activated="true" class="nominal_to_numerical" compatibility="11.0.000" expanded="true" height="103" name="Nominal to Numerical" width="90" x="1251" y="34">
+          <operator activated="true" class="nominal_to_numerical" compatibility="11.0.000" expanded="true" height="103" name="Nominal to Numerical" width="90" x="715" y="34">
             <parameter key="return_preprocessing_model" value="false"/>
             <parameter key="attribute_filter_type" value="subset"/>
             <parameter key="attribute" value=""/>
@@ -250,7 +290,7 @@
             <parameter key="unexpected_value_handling" value="all 0 and warning"/>
             <parameter key="use_underscore_in_name" value="false"/>
           </operator>
-          <operator activated="true" class="subprocess" compatibility="11.0.000" expanded="true" height="103" name="KNN" width="90" x="1385" y="34">
+          <operator activated="false" class="subprocess" compatibility="11.0.000" expanded="true" height="103" name="KNN" width="90" x="983" y="238">
             <process expanded="true">
               <operator activated="true" class="blending:split_data" compatibility="11.0.000" expanded="true" height="103" name="Split Data (2)" width="90" x="112" y="34">
                 <enumeration key="partitions">
@@ -324,14 +364,10 @@
             </process>
           </operator>
           <connect from_port="in 1" to_op="Select Attributes (2)" to_port="example set input"/>
-          <connect from_op="Select Attributes (2)" from_port="example set output" to_op="Remove Duplicates" to_port="example set input"/>
-          <connect from_op="Remove Duplicates" from_port="example set output" to_op="Remove missing val" to_port="example set input"/>
-          <connect from_op="Remove missing val" from_port="example set output" to_op="Rename" to_port="example set input"/>
-          <connect from_op="Rename" from_port="example set output" to_op="Set Role (2)" to_port="example set input"/>
-          <connect from_op="Set Role (2)" from_port="example set output" to_op="(Date Processing)" to_port="in 1"/>
-          <connect from_op="(Date Processing)" from_port="out 1" to_op="Generate Attributes" to_port="table input"/>
-          <connect from_op="Generate Attributes" from_port="table output" to_op="Select Attributes (3)" to_port="example set input"/>
-          <connect from_op="Select Attributes (3)" from_port="example set output" to_op="Normalize" to_port="example set input"/>
+          <connect from_op="Select Attributes (2)" from_port="example set output" to_op="Clean data" to_port="in 1"/>
+          <connect from_op="Clean data" from_port="out 1" to_op="Construct data" to_port="in 1"/>
+          <connect from_op="Construct data" from_port="out 1" to_op="integrate data" to_port="example set input"/>
+          <connect from_op="integrate data" from_port="example set output" to_op="Normalize" to_port="example set input"/>
           <connect from_op="Normalize" from_port="example set output" to_op="Nominal to Numerical" to_port="example set input"/>
           <connect from_op="Nominal to Numerical" from_port="example set output" to_port="out 1"/>
           <portSpacing port="source_in 1" spacing="0"/>
@@ -339,8 +375,6 @@
           <portSpacing port="sink_out 1" spacing="0"/>
           <portSpacing port="sink_out 2" spacing="0"/>
           <portSpacing port="sink_out 3" spacing="0"/>
-          <portSpacing port="sink_out 4" spacing="0"/>
-          <portSpacing port="sink_out 5" spacing="0"/>
         </process>
       </operator>
       <connect from_op="Retrieve ChicagoCrimeData_2019_2024_FilteredStratified" from_port="output" to_op="General Preparation" to_port="in 1"/>
@@ -349,16 +383,12 @@
       <connect from_op="Multiply" from_port="output 2" to_op="DT PREPARATION &amp; PROCESS" to_port="in 1"/>
       <connect from_op="Multiply" from_port="output 3" to_op="CLUSTERING PREPARATION &amp; PROCESS" to_port="in 1"/>
       <connect from_op="Multiply" from_port="output 4" to_op="OUTLIER DETECTION PREPARATION &amp; PROCESS" to_port="in 1"/>
-      <connect from_op="KNN PREPARATION &amp; PROCESS" from_port="out 1" to_port="result 1"/>
-      <connect from_op="KNN PREPARATION &amp; PROCESS" from_port="out 2" to_port="result 2"/>
-      <connect from_op="KNN PREPARATION &amp; PROCESS" from_port="out 3" to_port="result 3"/>
-      <connect from_op="KNN PREPARATION &amp; PROCESS" from_port="out 4" to_port="result 4"/>
+      <connect from_op="KNN PREPARATION &amp; PROCESS" from_port="out 1" to_port="result 2"/>
+      <connect from_op="KNN PREPARATION &amp; PROCESS" from_port="out 2" to_port="result 1"/>
       <portSpacing port="source_input 1" spacing="0"/>
       <portSpacing port="sink_result 1" spacing="0"/>
       <portSpacing port="sink_result 2" spacing="0"/>
       <portSpacing port="sink_result 3" spacing="0"/>
-      <portSpacing port="sink_result 4" spacing="0"/>
-      <portSpacing port="sink_result 5" spacing="0"/>
     </process>
   </operator>
 </process>
