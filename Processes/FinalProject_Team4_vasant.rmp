@@ -821,30 +821,11 @@
                 </process>
                 <description align="center" color="red" colored="true" width="126">DONE INITIALLY TO Check and plot Elbow Graph to find optimal K-value for kmeans clustering&lt;br&gt;(Disabled for memory and time efficiency, take around 15 mins to train)&lt;br/&gt;&lt;br/&gt;This Optimal K value is used in all the main clustering techniques</description>
               </operator>
-              <operator activated="false" class="filter_examples" compatibility="11.0.000" expanded="true" height="103" name="Filter Examples" width="90" x="983" y="646">
-                <parameter key="parameter_expression" value=""/>
-                <parameter key="condition_class" value="custom_filters"/>
-                <parameter key="invert_filter" value="false"/>
-                <list key="filters_list">
-                  <parameter key="filters_entry_key" value="count(ID).lt.10"/>
-                </list>
-                <parameter key="filters_logic_and" value="true"/>
-                <parameter key="filters_check_metadata" value="true"/>
-              </operator>
-              <operator activated="false" class="concurrency:join" compatibility="11.0.000" expanded="true" height="82" name="Final Join" width="90" x="1251" y="544">
-                <parameter key="remove_double_attributes" value="true"/>
-                <parameter key="join_type" value="inner"/>
-                <parameter key="use_id_attribute_as_key" value="false"/>
-                <list key="key_attributes">
-                  <parameter key="cluster" value="cluster"/>
-                </list>
-                <parameter key="keep_both_join_attributes" value="true"/>
-              </operator>
               <operator activated="true" class="concurrency:k_means" compatibility="11.0.000" expanded="true" height="82" name="Clustering" width="90" x="246" y="391">
                 <parameter key="add_cluster_attribute" value="true"/>
                 <parameter key="add_as_label" value="false"/>
                 <parameter key="remove_unlabeled" value="false"/>
-                <parameter key="k" value="50"/>
+                <parameter key="k" value="260"/>
                 <parameter key="max_runs" value="10"/>
                 <parameter key="determine_good_start_values" value="true"/>
                 <parameter key="measure_types" value="BregmanDivergences"/>
@@ -887,7 +868,7 @@
                 <parameter key="select_subset" value="Arrest␞cluster␞Day␞Domestic␞LocationType␞PoliceCode␞PoliceDistricts␞PrimaryTypeOfCrime␞Season␞TimeOfDay␞X Coordinate␞Y Coordinate␞Year"/>
                 <parameter key="also_apply_to_special_attributes_(id,_label..)" value="false"/>
               </operator>
-              <operator activated="true" class="multiply" compatibility="11.0.000" expanded="true" height="82" name="multiply" width="90" x="514" y="544"/>
+              <operator activated="true" class="multiply" compatibility="11.0.000" expanded="true" height="103" name="multiply" width="90" x="514" y="544"/>
               <operator activated="true" class="aggregate" compatibility="11.0.000" expanded="true" height="82" name="Aggregate" width="90" x="648" y="646">
                 <parameter key="use_default_aggregation" value="false"/>
                 <parameter key="attribute_filter_type" value="single"/>
@@ -911,6 +892,25 @@
                 <parameter key="only_distinct" value="false"/>
                 <parameter key="ignore_missings" value="true"/>
               </operator>
+              <operator activated="true" class="filter_examples" compatibility="11.0.000" expanded="true" height="103" name="Filter Examples" width="90" x="782" y="646">
+                <parameter key="parameter_expression" value=""/>
+                <parameter key="condition_class" value="custom_filters"/>
+                <parameter key="invert_filter" value="false"/>
+                <list key="filters_list">
+                  <parameter key="filters_entry_key" value="count(ID).lt.10"/>
+                </list>
+                <parameter key="filters_logic_and" value="true"/>
+                <parameter key="filters_check_metadata" value="true"/>
+              </operator>
+              <operator activated="true" class="concurrency:join" compatibility="11.0.000" expanded="true" height="82" name="Final Join" width="90" x="916" y="544">
+                <parameter key="remove_double_attributes" value="true"/>
+                <parameter key="join_type" value="inner"/>
+                <parameter key="use_id_attribute_as_key" value="false"/>
+                <list key="key_attributes">
+                  <parameter key="cluster" value="cluster"/>
+                </list>
+                <parameter key="keep_both_join_attributes" value="true"/>
+              </operator>
               <connect from_port="in 1" to_op="Multiply (4)" to_port="input"/>
               <connect from_op="Multiply (4)" from_port="output 1" to_op="Nominal to Numerical (2)" to_port="example set input"/>
               <connect from_op="Multiply (4)" from_port="output 2" to_op="join" to_port="right"/>
@@ -918,14 +918,16 @@
               <connect from_op="Normalize (3)" from_port="example set output" to_op="Normalize (2)" to_port="example set input"/>
               <connect from_op="Normalize (2)" from_port="example set output" to_op="Multiply (5)" to_port="input"/>
               <connect from_op="Multiply (5)" from_port="output 1" to_op="Clustering" to_port="example set"/>
-              <connect from_op="Filter Examples" from_port="example set output" to_op="Final Join" to_port="right"/>
               <connect from_op="Clustering" from_port="cluster model" to_op="Performance" to_port="cluster model"/>
               <connect from_op="Clustering" from_port="clustered set" to_op="Performance" to_port="example set"/>
               <connect from_op="Performance" from_port="example set" to_op="join" to_port="left"/>
               <connect from_op="join" from_port="join" to_op="Select Attributes (3)" to_port="example set input"/>
               <connect from_op="Select Attributes (3)" from_port="example set output" to_op="multiply" to_port="input"/>
-              <connect from_op="multiply" from_port="output 1" to_op="Aggregate" to_port="example set input"/>
-              <connect from_op="Aggregate" from_port="example set output" to_port="out 1"/>
+              <connect from_op="multiply" from_port="output 1" to_op="Final Join" to_port="left"/>
+              <connect from_op="multiply" from_port="output 2" to_op="Aggregate" to_port="example set input"/>
+              <connect from_op="Aggregate" from_port="example set output" to_op="Filter Examples" to_port="example set input"/>
+              <connect from_op="Filter Examples" from_port="example set output" to_op="Final Join" to_port="right"/>
+              <connect from_op="Final Join" from_port="join" to_port="out 1"/>
               <portSpacing port="source_in 1" spacing="0"/>
               <portSpacing port="source_in 2" spacing="0"/>
               <portSpacing port="sink_out 1" spacing="0"/>
