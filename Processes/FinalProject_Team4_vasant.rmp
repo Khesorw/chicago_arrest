@@ -93,7 +93,7 @@
             <parameter key="type" value="exclude attributes"/>
             <parameter key="attribute_filter_type" value="a subset"/>
             <parameter key="select_attribute" value=""/>
-            <parameter key="select_subset" value="Beat␞Block␞IUCR␞Latitude␞Longitude␞Ward␞Year"/>
+            <parameter key="select_subset" value="Block␞IUCR␞Latitude␞Longitude␞Ward␞Year"/>
             <parameter key="also_apply_to_special_attributes_(id,_label..)" value="false"/>
             <description align="center" color="orange" colored="true" width="126">Drop final set of un-needed columns after correlation and association rule analysis</description>
           </operator>
@@ -397,7 +397,7 @@
                 <parameter key="type" value="exclude attributes"/>
                 <parameter key="attribute_filter_type" value="a subset"/>
                 <parameter key="select_attribute" value=""/>
-                <parameter key="select_subset" value="Community Area␞Date␞Description␞District␞FBI_Code␞hour␞Location_Description␞Month␞Primary Type"/>
+                <parameter key="select_subset" value="Community Area␞Date␞Description␞District␞FBI_Code␞hour␞Location_Description␞Month␞Primary Type␞Beat"/>
                 <parameter key="also_apply_to_special_attributes_(id,_label..)" value="false"/>
                 <description align="center" color="red" colored="true" width="126">Drop un-required columns for any of the further clustering models</description>
               </operator>
@@ -703,7 +703,7 @@
               <operator activated="true" class="multiply" compatibility="11.0.000" expanded="true" height="103" name="Multiply (4)" width="90" x="45" y="34">
                 <description align="center" color="yellow" colored="true" width="126">First chain goes&lt;br/&gt;through the clustering process and returns a cluster column along with the OHE and Normalized columns as the post clustering dataset&lt;br&gt;&lt;br&gt;Second chain is used to join the original columns with post clustered dataset for interpretation</description>
               </operator>
-              <operator activated="true" class="nominal_to_numerical" compatibility="11.0.000" expanded="true" height="103" name="Nominal to Numerical (2)" width="90" x="246" y="34">
+              <operator activated="true" class="nominal_to_numerical" compatibility="11.0.000" expanded="true" height="103" name="Nominal to Numerical (2)" width="90" x="380" y="34">
                 <parameter key="return_preprocessing_model" value="false"/>
                 <parameter key="attribute_filter_type" value="subset"/>
                 <parameter key="attribute" value=""/>
@@ -724,7 +724,7 @@
                 <parameter key="use_underscore_in_name" value="false"/>
                 <description align="center" color="red" colored="true" width="126">One hot encoding for categorical columns</description>
               </operator>
-              <operator activated="true" class="normalize" compatibility="11.0.000" expanded="true" height="103" name="Normalize (3)" width="90" x="380" y="34">
+              <operator activated="true" class="normalize" compatibility="11.0.000" expanded="true" height="103" name="Normalize (3)" width="90" x="514" y="34">
                 <parameter key="return_preprocessing_model" value="false"/>
                 <parameter key="attribute_filter_type" value="single"/>
                 <parameter key="attribute" value="Year"/>
@@ -744,7 +744,7 @@
                 <parameter key="allow_negative_values" value="false"/>
                 <description align="center" color="red" colored="true" width="126">Standarize year to prevent bigger values from dominating</description>
               </operator>
-              <operator activated="true" class="normalize" compatibility="11.0.000" expanded="true" height="103" name="Normalize (2)" width="90" x="514" y="34">
+              <operator activated="true" class="normalize" compatibility="11.0.000" expanded="true" height="103" name="Normalize (2)" width="90" x="648" y="34">
                 <parameter key="return_preprocessing_model" value="false"/>
                 <parameter key="attribute_filter_type" value="subset"/>
                 <parameter key="attribute" value="Salary"/>
@@ -764,10 +764,10 @@
                 <parameter key="allow_negative_values" value="false"/>
                 <description align="center" color="red" colored="true" width="126">Normailze all other relevant columns</description>
               </operator>
-              <operator activated="true" class="multiply" compatibility="11.0.000" expanded="true" height="82" name="Multiply (5)" width="90" x="648" y="34">
+              <operator activated="true" class="multiply" compatibility="11.0.000" expanded="true" height="82" name="Multiply (5)" width="90" x="782" y="34">
                 <description align="center" color="red" colored="true" width="126">chain can be split to detect optimal k values&lt;br&gt;&lt;br&gt;and then second chain to implement the optimal K</description>
               </operator>
-              <operator activated="false" class="concurrency:loop_parameters" compatibility="11.0.000" expanded="true" height="82" name="Loop Parameters Clustering" width="90" x="782" y="34">
+              <operator activated="false" class="concurrency:loop_parameters" compatibility="11.0.000" expanded="true" height="82" name="Loop Parameters Clustering" width="90" x="916" y="34">
                 <list key="parameters">
                   <parameter key="ClusteringLoopParameters.k" value="[2.0;250.0;50;linear]"/>
                 </list>
