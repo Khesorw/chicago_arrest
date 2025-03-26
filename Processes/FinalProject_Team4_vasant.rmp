@@ -536,7 +536,7 @@
                 <parameter key="type" value="include attributes"/>
                 <parameter key="attribute_filter_type" value="a subset"/>
                 <parameter key="select_attribute" value=""/>
-                <parameter key="select_subset" value="Arrest␞cluster␞Day␞Domestic␞PoliceCode␞PrimaryTypeOfCrime␞Season␞TimeOfDay␞Year"/>
+                <parameter key="select_subset" value="Arrest␞cluster␞Domestic␞PoliceCode␞PrimaryTypeOfCrime␞Season␞TimeOfDay␞Day_from_ES2␞Year_from_ES2"/>
                 <parameter key="also_apply_to_special_attributes_(id,_label..)" value="false"/>
               </operator>
               <connect from_port="in 1" to_op="Select Attributes crime-type" to_port="example set input"/>
@@ -676,7 +676,7 @@
                 <parameter key="type" value="include attributes"/>
                 <parameter key="attribute_filter_type" value="a subset"/>
                 <parameter key="select_attribute" value=""/>
-                <parameter key="select_subset" value="cluster␞Day␞LocationType␞PoliceDistricts␞Season␞TimeOfDay␞X Coordinate␞Y Coordinate␞Year"/>
+                <parameter key="select_subset" value="cluster␞LocationType␞PoliceDistricts␞Season␞TimeOfDay␞Year_from_ES2␞Y Coordinate_from_ES2␞X Coordinate_from_ES2␞Day_from_ES2"/>
                 <parameter key="also_apply_to_special_attributes_(id,_label..)" value="false"/>
               </operator>
               <connect from_port="in 1" to_op="Select Attributes spatial-type" to_port="example set input"/>
@@ -865,7 +865,7 @@
                 <parameter key="type" value="include attributes"/>
                 <parameter key="attribute_filter_type" value="a subset"/>
                 <parameter key="select_attribute" value=""/>
-                <parameter key="select_subset" value="Arrest␞cluster␞Day␞Domestic␞LocationType␞PoliceCode␞PoliceDistricts␞PrimaryTypeOfCrime␞Season␞TimeOfDay␞X Coordinate␞Y Coordinate␞Year"/>
+                <parameter key="select_subset" value="Arrest␞Day_from_ES2␞Domestic␞LocationType␞PoliceCode␞PoliceDistricts␞PrimaryTypeOfCrime␞Season␞TimeOfDay␞X Coordinate_from_ES2␞Y Coordinate_from_ES2␞Year_from_ES2"/>
                 <parameter key="also_apply_to_special_attributes_(id,_label..)" value="false"/>
               </operator>
               <operator activated="true" class="multiply" compatibility="11.0.000" expanded="true" height="103" name="multiply" width="90" x="514" y="544"/>
