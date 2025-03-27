@@ -97,7 +97,7 @@
     "stackingType" : "NONE",
     "additionalColumns" : {
       "color" : "cluster",
-      "bubble_size" : "ID"
+      "bubble_size" : null
     },
     "aggregationConfiguration" : {
       "enabled" : false,
@@ -106,13 +106,6 @@
       "aggregationParameter" : null,
       "sortingDirection" : "DESCENDING",
       "sortingSource" : "NONE"
-    },
-    "yaxisId" : "y1",
-    "typeSpecificConfiguration" : {
-      "configuration" : {
-        "regression_interpolation" : "-",
-        "jitter_amount" : 6
-      }
     },
     "tooltipConfiguration" : {
       "valuePrefix" : null,
@@ -157,7 +150,14 @@
           "filterValue" : null
         }
       }
-    }
+    },
+    "typeSpecificConfiguration" : {
+      "configuration" : {
+        "regression_interpolation" : "-",
+        "jitter_amount" : 6
+      }
+    },
+    "yaxisId" : "y1"
   } ],
   "mapConfiguration" : {
     "mapKey" : "custom/world",
