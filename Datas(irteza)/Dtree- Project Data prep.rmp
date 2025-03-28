@@ -628,7 +628,7 @@
             <parameter key="return_preprocessing_model" value="false"/>
             <parameter key="attribute_filter_type" value="subset"/>
             <parameter key="attribute" value="Domestic"/>
-            <parameter key="attributes" value="Crime_Category|Domestic|Location_Category"/>
+            <parameter key="attributes" value="Domestic|Crime_Category|Location_Category"/>
             <parameter key="use_except_expression" value="false"/>
             <parameter key="value_type" value="nominal"/>
             <parameter key="use_value_type_exception" value="false"/>
@@ -660,13 +660,14 @@
           <portSpacing port="sink_out 1" spacing="0"/>
           <portSpacing port="sink_out 2" spacing="0"/>
           <portSpacing port="sink_out 3" spacing="0"/>
-          <description align="center" color="yellow" colored="false" height="95" resized="false" width="119" x="30" y="132">Filting no missing values based on attribute customiztion&lt;br/&gt;</description>
+          <description align="center" color="yellow" colored="false" height="95" resized="false" width="119" x="36" y="138">Filting no missing values based on attribute customiztion&lt;br/&gt;</description>
           <description align="center" color="yellow" colored="false" height="210" resized="true" width="113" x="171" y="115">Created new attributes based on date and primary type to improve understanding and enhance decision tree performance.</description>
           <description align="center" color="yellow" colored="false" height="83" resized="false" width="111" x="430" y="284">Set role as Arrest as label</description>
-          <description align="center" color="yellow" colored="false" height="98" resized="false" width="172" x="949" y="314">Categorial Values to Numeric ( Arrest and Domestic )</description>
-          <description align="center" color="yellow" colored="false" height="105" resized="false" width="180" x="1158" y="296">Discretize Using Binnig for Hours of the crimes</description>
+          <description align="center" color="yellow" colored="false" height="50" resized="true" width="170" x="949" y="314">Normalizing X/Y Cordinate</description>
+          <description align="center" color="yellow" colored="false" height="106" resized="true" width="120" x="299" y="200">Discretize Using Binnig for Hours of the crimes</description>
           <description align="center" color="yellow" colored="false" height="64" resized="true" width="166" x="690" y="442">Selecting Final Attribute for Dtree</description>
           <description align="center" color="yellow" colored="false" height="104" resized="false" width="180" x="1413" y="162">2 joins for RM and DT</description>
+          <description align="center" color="yellow" colored="false" height="105" resized="false" width="180" x="1153" y="263">Changing categorical arrtibutes to numeric</description>
         </process>
       </operator>
       <operator activated="true" class="subprocess" compatibility="11.0.000" expanded="true" height="145" name="Random Forest" width="90" x="916" y="493">
